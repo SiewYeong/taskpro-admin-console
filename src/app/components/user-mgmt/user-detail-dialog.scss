@@ -1,0 +1,96 @@
+@import url('../../app.component.scss');
+
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+.mat-toolbar {
+    background-color: sandybrown;
+    height: 50px;
+}
+
+.dialog-title {
+    text-align: center;
+    display: inline-table;
+    width: 100%;
+    color: white;
+    font-size: 20px;
+}
+
+.mat-dialog-content {
+    margin: 20px 10px 10px 10px;
+    height: 395px;
+}
+.editBtn {
+    position: absolute;
+    background: none;
+    color: white;
+    line-height: 0px;
+}
+
+.closeBtn {
+    position: relative;
+    background: none;
+    color: white;
+    line-height: 0px;
+}
+
+.statusBtn {
+    width: 100px;
+    //color: white;
+    border-style: solid;
+    border-width: 1px;
+    .mat-icon {
+        font-size: 21px !important;
+    }
+}
+
+.mat-button {
+    .mat-menu-trigger {
+      position: absolute;
+      top: 0;
+      right: -1px;
+    }
+}
+
+.dialogBtn {
+    font-size: 18px;
+    color: white;
+    width: 160px;
+    position: relative;
+}
+
+.mat-menu-item {
+    line-height: 36px;
+    height: 36px;
+}
+
+.label {
+    font-size: 17px; 
+    color:#363E3F;
+}
+
+.field-value {
+    padding-top: 10px;
+}
+
+.text-inside-grid {
+    word-break: break-word;
+}
+
+::ng-deep .mat-form-field-infix {
+    border-top: 4px solid transparent !important;
+    padding: 0.5em 0 !important;
+}
+
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+    color: sandybrown;
+}
+
+::ng-deep .mat-form-field-subscript-wrapper {
+    margin-top: 5px !important;
+}
+
+.mat-button-focus-overlay {
+    background-color: transparent!important;
+}

@@ -1,0 +1,82 @@
+<!-- <section class="backNavBar">
+    <div class="backNavBarTitle">USER MANAGEMENT</div>
+    <button mat-button class="backBtn" (click)="back()">
+        <mat-icon aria-label="Back icon">arrow_back</mat-icon>
+    </button>
+</section> -->
+<div class="moduleTitle">USER MANAGEMENT</div>
+
+<section class="user-table-container">
+    <mat-grid-list cols="4" rowHeight="100px" style="margin: 0px 20px;">
+        <mat-grid-tile [colspan]="3">
+            <mat-form-field appearance="standard" style="width: 100%;">
+                <mat-label>Search</mat-label>
+                <input matInput (keyup)="applyFilter($event)" placeholder="User ID/Name" #input>
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1">
+            <button mat-button style="background-color: sandybrown; color: white; font-size: 18px;" (click)="addUser()" tabindex=-1>Add New User</button>
+        </mat-grid-tile>
+    </mat-grid-list>
+
+    <!-- <hr color="sandybrown" style="border-top: 1px;"> -->
+      
+    <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" matSort>
+      
+          <!-- User ID Column -->
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 400px;"> User ID </th>
+            <td mat-cell *matCellDef="let row"><a class="user-table-id" (click)="openDialog(row,0)">{{ row.id }}<mat-icon style="font-size: 16px; position: absolute;">arrow_right</mat-icon></a></td>
+          </ng-container>
+      
+          <!-- User Name Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 400px;"> User Name </th>
+            <td mat-cell *matCellDef="let row">{{row.name}}</td>
+          </ng-container>
+
+          <!-- Role Column -->
+          <ng-container matColumnDef="role">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 200px;"> Role </th>
+            <td mat-cell *matCellDef="let row">{{row.role.toUpperCase()}}</td>
+          </ng-container>
+      
+          <!-- Joined At Column -->
+          <ng-container matColumnDef="joined">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 300px;"> Joined At </th>
+            <td mat-cell *matCellDef="let row">{{row.joined.toDate() | date:'dd MMM yyyy'}}<br>{{row.joined.toDate() | date:'h:mma'}}</td>
+          </ng-container>
+
+          <!-- Status Column -->
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 200px;"> Status </th>
+            <td mat-cell *matCellDef="let row">
+                <div [ngSwitch]="row.status">
+                    <button *ngSwitchCase="0" mat-button class="statusBtn" style="border-color: green; color: green;" (click)="menuTrigger.openMenu()">
+                        Active<mat-icon>keyboard_arrow_right</mat-icon>
+                        <div #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu"></div>
+                    </button>
+                    <button *ngSwitchCase="1" mat-button class="statusBtn" style="border-color: red; color: red;" (click)="menuTrigger.openMenu()">
+                        Inactive<mat-icon>keyboard_arrow_right</mat-icon>
+                        <div #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu"></div>
+                    </button>
+                </div>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="updateStatus(row)">{{row.status==0 ? 'Deactivate':'Activate'}}</button>
+                </mat-menu>
+            </td>
+          </ng-container>
+      
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      
+          <!-- Row shown when there is no matching data. -->
+          <!-- <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+          </tr> -->
+        </table>
+      
+        <mat-paginator pageSize="10"></mat-paginator>
+    </div>
+</section>

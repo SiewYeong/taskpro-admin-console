@@ -1,0 +1,99 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.mat-icon{
+    font-family: 'Material Icons' !important;
+}
+
+body {
+    background-color: #fafafa;
+}
+
+.container {
+    padding-top: 65px;
+}
+
+.loggedContainer {
+    padding: 20px;
+}
+
+.overall-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;;
+}
+
+.mat-sidenav {
+    background-color: sandybrown;
+    width: 250px;
+}
+
+.mat-toolbar {
+    background-color: sandybrown;
+}
+
+.app-name {
+    color: white;
+    font-size: 30px;
+    margin: auto;
+    padding: 10px;
+}
+
+.menuBtn {
+    background: none;
+    border: none;
+    color: white;
+}
+
+button {
+    outline: none;
+    overflow: hidden;
+}
+
+.backNavBar {
+    height: 60px;
+    background-color: sandybrown;
+}
+
+.backNavBarTitle {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    margin-top:5px;
+    color: white;
+    font-size: 32px;
+    height: 60px;
+}
+
+.backBtn {
+    height:59px;
+    width: 70px;
+    margin:0 60px;
+    background: none;
+    border:none;
+    float:left;
+}
+
+.moduleTitle {
+    width: 100%;
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+::ng-deep .mat-dialog-container {
+    background-color: #fafafa;
+}
+
+.text-inside-grid {
+    position: absolute;
+    left: 5px;
+    top: 5px;
+}
+
+::ng-deep .mat-dialog-container {
+    padding: 0px;
+}

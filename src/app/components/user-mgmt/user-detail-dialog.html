@@ -1,0 +1,177 @@
+<div class="dialog-container">
+    <mat-toolbar>
+        <span class="dialog-title" [ngSwitch]="fn">
+            <span *ngSwitchCase="0">User Detail</span>
+            <span *ngSwitchCase="1">Edit User Detail</span>
+            <span *ngSwitchCase="2">Add New User</span>
+        </span>
+        <button mat-icon-button class="closeBtn" tabindex=-1 (click)="closeDialog()">
+            <mat-icon style="background: none;">close</mat-icon>
+        </button>
+    </mat-toolbar>
+    <div *ngIf="fn==0; else other_content">
+        <div mat-dialog-content>
+            <mat-grid-list cols="2" rowHeight="20:7" gutterSize="20px">
+                <mat-grid-tile>
+                    <div class="text-inside-grid">
+                        <div class="label">User ID</div>
+                        <div class="field-value">{{ user.id }}</div>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <div class="text-inside-grid">
+                        <div class="label">Joined At</div>
+                        <div class="field-value">{{user.joined.toDate() | date:'dd MMM yyyy'}}<br>{{user.joined.toDate() | date:'h:mma'}}</div>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <div class="text-inside-grid">
+                        <div class="label">User Name</div>
+                        <div class="field-value">{{ user.name }}</div>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <div class="text-inside-grid">
+                        <div class="label">IC/Passport No.</div>
+                        <div class="field-value">{{ user.idnum }}</div>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <div class="text-inside-grid">
+                        <div class="label">Contact No.</div>
+                        <div class="field-value">{{ user.ph_num }}</div>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <div class="text-inside-grid">
+                        <div class="label">Email</div>
+                        <div class="field-value">{{ user.email }}</div>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <div class="text-inside-grid">
+                        <div class="label">Role</div>
+                        <div class="field-value">{{ user.role.toUpperCase() }}</div>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <div class="text-inside-grid">
+                        <div class="label">Status</div>
+                        <div [ngSwitch]="user.status" class="field-value">
+                            <button *ngSwitchCase="0" mat-stroked-button disabled style="border-color: green; color: green;">
+                                Active
+                            </button>
+                            <button *ngSwitchCase="1" mat-stroked-button disabled style="border-color: red; color: red;">
+                                Inactive
+                            </button>
+                        </div>
+                        <!-- <mat-menu #menu="matMenu" y-position="below">
+                            <button mat-menu-item (click)="changeStatus(user)">{{user.status==0 ? 'Deactivate':'Activate'}}</button>
+                        </mat-menu> -->
+                    </div>
+                </mat-grid-tile>
+            </mat-grid-list>
+        </div>
+        <div mat-dialog-actions align="center">
+            <button mat-button class="dialogBtn" style="background-color: sandybrown; right: 20px;" tabindex=-1 (click)="edit()">Edit</button>
+            <button mat-button class="dialogBtn" style="background-color: gray; left: 20px;" tabindex=-1 (click)="delete()">Delete</button>
+        </div>
+    </div>
+    <ng-template #other_content>
+        <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+            <div mat-dialog-content #other_content>
+                <mat-grid-list cols="2" rowHeight="20:7" gutterSize="20px">
+                    <mat-grid-tile *ngIf="fn==1">
+                        <div class="text-inside-grid">
+                            <div class="label">User ID</div>
+                            <div class="field-value">{{ user.id }}</div>
+                        </div>
+                        <!-- <label class="formLabel"><span style="font-size: 17px; color:#363E3F;">User ID</span></label> -->
+                        <!-- <input type="text" class="formInput" [(ngModel)]="userId" placeholder="Input user ID" (input)="regionFieldOnChange()"/> -->
+                    </mat-grid-tile>
+                    <mat-grid-tile *ngIf="fn==1">
+                        <div class="text-inside-grid">
+                            <div class="label">Joined At</div>
+                            <div class="field-value">{{user.joined.toDate() | date:'dd MMM yyyy'}}<br>{{user.joined.toDate() | date:'h:mma'}}</div>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <div class="text-inside-grid">
+                            <div class="label">User Name</div>
+                            <mat-form-field appearance="outline">
+                                <input matInput type="text" formControlName="name" required/>
+                                <mat-error *ngIf="userForm.get('name').hasError('required')">User Name is required.</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <div class="text-inside-grid">
+                            <div class="label">IC/Passport No.</div>
+                            <mat-form-field appearance="outline">
+                                <input matInput type="text" formControlName="idnum" required/>
+                                <mat-error *ngIf="userForm.get('idnum').hasError('required')">IC/Passport No. is required.</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <div class="text-inside-grid">
+                            <div class="label">Contact No.</div>
+                            <mat-form-field appearance="outline">
+                                <input matInput type="text" formControlName="ph_num" required/>
+                                <mat-error *ngIf="userForm.get('ph_num').hasError('required')">Contact No. is required.</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <div class="text-inside-grid">
+                            <div class="label">Email</div>
+                            <mat-form-field appearance="outline">
+                                <input matInput type="email" formControlName="email" required/>
+                                <mat-error *ngIf="userForm.get('email').hasError('required')">Email is required.</mat-error>
+                                <mat-error *ngIf="userForm.get('email').hasError('email')">Please enter a valid email.</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <div class="text-inside-grid">
+                            <div class="label">Role</div>
+                            <div class="field-value">{{ user.role.toUpperCase() }}</div>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <div *ngIf="fn==1" class="text-inside-grid">
+                            <div class="label">Status</div>
+                            <div [ngSwitch]="userForm.get('status').value" class="field-value">
+                                <button *ngSwitchCase="0" mat-button class="statusBtn" type="button" style="border-color: green; color: green;" (click)="menuTrigger.openMenu()">
+                                    Active<mat-icon>keyboard_arrow_right</mat-icon>
+                                    <div #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu"></div>
+                                </button>
+                                <button *ngSwitchCase="1" mat-button class="statusBtn" type="button" style="border-color: red; color: red;" (click)="menuTrigger.openMenu()">
+                                    Inactive<mat-icon>keyboard_arrow_right</mat-icon>
+                                    <div #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu"></div>
+                                </button>
+                            </div>
+                            <mat-menu #menu="matMenu">
+                                <button mat-menu-item (click)="changeStatus()">{{userForm.get('status').value==0 ? 'Deactivate':'Activate'}}</button>
+                            </mat-menu>
+                        </div>
+                        <div *ngIf="fn==2" class="text-inside-grid">
+                            <div class="label">Status</div>
+                            <div [ngSwitch]="userForm.get('status').value">
+                                <button *ngSwitchCase="0" mat-stroked-button disabled type="button" style="border-color: green; color: green;">
+                                    Active
+                                </button>
+                                <button *ngSwitchCase="1" mat-stroked-button disabled type="button" style="border-color: red; color: red;">
+                                    Inactive
+                                </button>
+                            </div>
+                        </div>
+                    </mat-grid-tile>
+                </mat-grid-list>
+            </div>
+            <div mat-dialog-actions align="center">
+                <button mat-button class="dialogBtn" style="background-color: sandybrown; " tabindex=-1 type="submit" [disabled]="!userForm.valid">Save</button>
+            </div>
+        </form>
+    </ng-template>
+</div>
