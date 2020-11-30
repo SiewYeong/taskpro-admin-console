@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -14,11 +15,20 @@ export class AppComponent {
     { id: 2, name: 'Task Management', naviPath: '/task-mgmt' },
     { id: 3, name: 'User Management', naviPath: '/user-mgmt' },
     { id: 4, name: 'Report Management', naviPath: '/report-mgmt' },
-    { id: 5, name: 'Account Setting', naviPath: '/acc-setting'},
-    { id: 6, name: 'Logout', naviPath: null }
+    { id: 5, name: 'Notification Management', naviPath: '/notif-mgmt' },
+    { id: 6, name: 'Account Setting', naviPath: '/acc-setting'},
+    { id: 7, name: 'Logout', naviPath: null }
   ];
+  selectedMenuId: number;
+  logoutMenuId = 7;
 
-  toggle() {
+  constructor(public authService: AuthService) {
+  }
+
+  toggle(menu) {
     this.sidenav.toggle();
+    if(menu.id == this.logoutMenuId) {
+      this.authService.logout();
+    }
   }
 }

@@ -1,0 +1,64 @@
+@import url('../../app.component.scss');
+
+.acc-setting-container {
+    margin: 80px auto;
+    //height: 440px;
+    //width: 900px;
+    width: 750px;
+    border-bottom: 1px solid #3a3a3a;
+    border-top: 1px solid #3a3a3a;
+}
+
+table {
+    border-collapse: collapse;
+    margin: auto;
+}
+
+tr.border-bottom td {
+    border-bottom: 1px solid #bbbbbb;
+}
+
+td {
+    padding: 22px 10px;
+}
+
+.label {
+    // position: absolute;
+    // right: 0px;
+    text-align: left;
+    font-weight: bold;
+    width: 160px;
+}
+
+.desc {
+    width: 325px;
+}
+
+.editBtn {
+    color: #22A8DA;
+    text-align: right;
+    width: 205px;
+}
+
+.editBtn span {
+    cursor: pointer;
+}
+
+.saveBtn {
+    font-size: 16px;
+    color: white;
+    background-color: sandybrown;
+    width: 80px;
+}
+
+.cancelBtn {
+    font-size: 16px;
+    color: white;
+    background-color: gray;
+    width: 80px;
+    margin-left: 10px;
+}
+
+.mat-form-field {
+    max-height: 42px;
+}

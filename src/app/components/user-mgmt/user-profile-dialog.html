@@ -1,0 +1,92 @@
+<div class="dialog-container">
+    <mat-toolbar>
+        <span class="dialog-title">User Profile</span>
+        <button mat-icon-button class="closeBtn" tabindex=-1 (click)="closeDialog()">
+            <mat-icon style="background: none;">close</mat-icon>
+        </button>
+    </mat-toolbar>
+    <div mat-dialog-content>
+        <mat-grid-list cols="6" rowHeight="3:2" gutterSize="10px">
+            <mat-grid-tile>
+                <img src={{profile.profile_pic}} style="height: 50px; width: 50px; border-radius: 50%;"/>
+            </mat-grid-tile>
+            <mat-grid-tile colspan="5">
+                <mat-card-content>
+                    <span style="font-weight: bold; font-size: 17px;">{{profile.name}}</span><br>
+                    <span>Joined at {{profile.joined.toDate() | date:'dd MMM yyyy'}}</span>
+                </mat-card-content>
+            </mat-grid-tile>
+        </mat-grid-list>
+        <table style="margin-top: 20px;">
+            <tr>
+                <td class="table-label" style="width: 25%;">Posted</td>
+                <td class="table-label" style="width: 25%;">Completed</td>
+                <td class="table-label" style="width: 25%;">Rating</td>
+                <td class="table-label" style="width: 25%;">Review</td>
+            </tr>
+            <tr>
+                <td>{{profile.task_posted}}</td>
+                <td>{{profile.task_completed}}</td>
+                <td>{{profile.rating}}</td>
+                <td>{{profile.review_num}}</td>
+            </tr>
+            <tr><td colspan="4" class="table-label">About</td></tr>
+            <tr><td colspan="4" style="text-align: left;">{{profile.about!="" ? profile.about:'-'}}</td></tr>
+            <tr><td colspan="6" class="table-label">Achievement</td></tr>
+            <tr><td colspan="6" style="text-align: left;">{{profile.achievement!="" ? profile.achievement:'-'}}</td></tr>
+            <tr><td colspan="6" class="table-label">Services</td></tr>
+            <tr><td colspan="6" style="text-align: left;">{{profile.services!="" ? profile.services:'-'}}</td></tr>
+            <tr><td colspan="6" class="table-label">Gallery</td></tr>
+            <tr>
+                <td colspan="6">
+                    <div *ngIf="profile.gallery.length!=0; else none_text"><img *ngFor="let imgPath of profile.gallery" src={{imgPath}} style="height: 70px; width: 70px;"/></div>
+                    <ng-template #none_text>-</ng-template>
+                </td>
+            </tr>
+        </table>
+        <!-- <mat-grid-list cols="2" rowHeight="50:18" gutterSize="10px">
+            <mat-grid-tile>
+                <div class="text-inside-grid">
+                    <div class="label">Profile ID</div>
+                    <div class="field-value">{{ profile.id }}</div>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <div class="text-inside-grid">
+                    <div class="label">User Name</div>
+                    <div class="field-value">{{ profile.name }}</div>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile colspan="2">
+                <div class="text-inside-grid">
+                    <div class="label">About</div>
+                    <div class="field-value">{{ profile.about }}</div>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile colspan="2">
+                <div class="text-inside-grid">
+                    <div class="label">Services</div>
+                    <div class="field-value">{{ profile.services }}</div>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile colspan="2">
+                <div class="text-inside-grid">
+                    <div class="label">Achievement</div>
+                    <div class="field-value">{{ profile.achievement }}</div>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <div class="text-inside-grid">
+                    <div class="label">No. of Task Completed</div>
+                    <div class="field-value">{{ profile.task_completed }}</div>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <div class="text-inside-grid">
+                    <div class="label">Rating</div>
+                    <div class="field-value">{{ profile.rating }}</div>
+                </div>
+            </mat-grid-tile>
+        </mat-grid-list> -->
+    </div>
+</div>

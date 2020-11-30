@@ -1,21 +1,15 @@
-<!-- <section class="backNavBar">
-    <div class="backNavBarTitle">USER MANAGEMENT</div>
-    <button mat-button class="backBtn" (click)="back()">
-        <mat-icon aria-label="Back icon">arrow_back</mat-icon>
-    </button>
-</section> -->
 <div class="moduleTitle">USER MANAGEMENT</div>
 
-<section class="user-table-container">
+<section class="module-container">
     <mat-grid-list cols="4" rowHeight="100px" style="margin: 0px 20px;">
-        <mat-grid-tile [colspan]="3">
+        <mat-grid-tile [colspan]="currentUser.role=='super admin' ? 3:4">
             <mat-form-field appearance="standard" style="width: 100%;">
                 <mat-label>Search</mat-label>
                 <input matInput (keyup)="applyFilter($event)" placeholder="User ID/Name" #input>
             </mat-form-field>
         </mat-grid-tile>
-        <mat-grid-tile [colspan]="1">
-            <button mat-button style="background-color: sandybrown; color: white; font-size: 18px;" (click)="addUser()" tabindex=-1>Add New User</button>
+        <mat-grid-tile [colspan]="1" *ngIf="currentUser.role=='super admin'">
+            <button mat-button style="background-color: sandybrown; color: white; font-size: 18px;" (click)="addAdmin()" tabindex=-1>Add New Admin</button>
         </mat-grid-tile>
     </mat-grid-list>
 
@@ -27,7 +21,7 @@
           <!-- User ID Column -->
           <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 400px;"> User ID </th>
-            <td mat-cell *matCellDef="let row"><a class="user-table-id" (click)="openDialog(row,0)">{{ row.id }}<mat-icon style="font-size: 16px; position: absolute;">arrow_right</mat-icon></a></td>
+            <td mat-cell *matCellDef="let row"><a class="clickable" (click)="openDialog(row,0)">{{ row.id }}<mat-icon class="arrow">arrow_right</mat-icon></a></td>
           </ng-container>
       
           <!-- User Name Column -->
@@ -52,19 +46,31 @@
           <ng-container matColumnDef="status">
             <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 200px;"> Status </th>
             <td mat-cell *matCellDef="let row">
-                <div [ngSwitch]="row.status">
-                    <button *ngSwitchCase="0" mat-button class="statusBtn" style="border-color: green; color: green;" (click)="menuTrigger.openMenu()">
-                        Active<mat-icon>keyboard_arrow_right</mat-icon>
-                        <div #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu"></div>
-                    </button>
-                    <button *ngSwitchCase="1" mat-button class="statusBtn" style="border-color: red; color: red;" (click)="menuTrigger.openMenu()">
-                        Inactive<mat-icon>keyboard_arrow_right</mat-icon>
-                        <div #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu"></div>
-                    </button>
+                <div *ngIf="row.role=='user'||(row.role!='super admin'&&currentUser.role=='super admin'); else disabled_statusbtn">
+                    <div [ngSwitch]="row.status">
+                        <button *ngSwitchCase="0" mat-button class="statusBtn" style="border-color: green; color: green;" (click)="menuTrigger.openMenu()">
+                            Active<mat-icon>keyboard_arrow_right</mat-icon>
+                            <div #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu"></div>
+                        </button>
+                        <button *ngSwitchCase="1" mat-button class="statusBtn" style="border-color: red; color: red;" (click)="menuTrigger.openMenu()">
+                            Inactive<mat-icon>keyboard_arrow_right</mat-icon>
+                            <div #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu"></div>
+                        </button>
+                    </div>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="updateStatus(row)">{{row.status==0 ? 'Deactivate':'Activate'}}</button>
+                    </mat-menu>
                 </div>
-                <mat-menu #menu="matMenu">
-                    <button mat-menu-item (click)="updateStatus(row)">{{row.status==0 ? 'Deactivate':'Activate'}}</button>
-                </mat-menu>
+                <ng-template #disabled_statusbtn>
+                    <div [ngSwitch]="row.status">
+                        <button *ngSwitchCase="0" mat-stroked-button disabled class="statusBtn" style="border-color: green; color: green;">
+                            Active
+                        </button>
+                        <button *ngSwitchCase="1" mat-stroked-button disabled class="statusBtn" style="border-color: red; color: red;">
+                            Inactive
+                        </button>
+                    </div>
+                </ng-template>
             </td>
           </ng-container>
       

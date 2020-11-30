@@ -1,0 +1,10 @@
+<div class="moduleTitle">LOGIN</div>
+<div class="form-container">
+    <form #formData="ngForm" (ngSubmit)="onSubmit(formData)">
+        <label>Email</label>
+        <input type="text" name="email" ngModel class="input-txt" required>
+        <label>Password</label>
+        <input type="password" name="password" ngModel class="input-txt" required>
+        <button mat-button type="submit" [disabled]="!formData.valid" class="login-btn">Login</button>
+    </form>
+</div>

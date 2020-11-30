@@ -1,0 +1,131 @@
+<div class="dialog-container">
+    <mat-toolbar>
+        <span class="dialog-title">Report Detail</span>
+        <button mat-icon-button class="closeBtn" tabindex=-1 (click)="closeDialog()">
+            <mat-icon style="background: none;">close</mat-icon>
+        </button>
+    </mat-toolbar>
+    <div>
+        <div mat-dialog-content>
+            <table>
+                <tr>
+                    <td class="label">Report ID</td>
+                    <td>{{ report.id }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Created By</td>
+                    <td><a class="clickable" (click)="openUserDialog(report.createdBy)">{{ report.author.name }}<mat-icon class="arrow">arrow_right</mat-icon></a></td>
+                </tr>
+                <tr>
+                    <td class="label">Created At</td>
+                    <td>{{report.createdAt.toDate() | date:'dd MMM yyyy h:mma'}}</td>
+                </tr>
+                <tr>
+                    <td class="label">Category</td>
+                    <td>{{ report.category }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Subcategory</td>
+                    <td>{{ report.subCategory }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Title</td>
+                    <td>{{ report.title }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Description</td>
+                    <td>{{ report.description }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Suggestion</td>
+                    <td>{{ report.suggestion }}</td>
+                </tr>
+                <tr *ngIf="report.profileRef!=null">
+                    <td class="label">Related User</td>
+                    <td><a class="clickable" (click)="openUserDialog('users/'+report.profileId)">{{ report.profileId }}<mat-icon class="arrow">arrow_right</mat-icon></a></td>
+                </tr>
+                <tr *ngIf="report.taskRef!=null">
+                    <td class="label">Related Task</td>
+                    <td><a class="clickable" (click)="openTaskDialog(report.taskRef)">{{ report.taskId }}<mat-icon class="arrow">arrow_right</mat-icon></a></td>
+                </tr>
+                <tr>
+                    <td class="label">Assign To</td>
+                    <td>
+                        <button mat-button class="assignBtn" tabindex=-1 (click)="assignMenuTrigger.openMenu()">
+                            {{assignToText}}<mat-icon>keyboard_arrow_right</mat-icon>
+                            <div #assignMenuTrigger="matMenuTrigger" [matMenuTriggerFor]="assignMenu"></div>
+                        </button>
+                        <mat-menu #assignMenu="matMenu">
+                            <button mat-menu-item disabled style="background-color: #eeeeee;">SUPER ADMIN</button>
+                            <button *ngFor="let super of superadmins" mat-menu-item (click)="assignTo(super.id, super.name)">{{super.name}}</button>
+                            <button mat-menu-item disabled style="background-color: #eeeeee;">SUPPORT ADMIN</button>
+                            <button *ngFor="let support of supportadmins" mat-menu-item (click)="assignTo(support.id, support.name)">{{support.name}}</button>
+                        </mat-menu>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">Status</td>
+                    <td>
+                        <button *ngIf="report.status=='Completed'; else menu_btn" mat-button class="statusBtn completed" tabindex=-1>{{report.status}}</button>
+                        <ng-template #menu_btn>
+                            <button mat-button class="statusBtn" tabindex=-1 [ngClass]="{'handling': report.status=='Handling', 'pending': report.status=='Pending'}" (click)="menuTrigger.openMenu()">
+                                {{report.status}}<mat-icon>keyboard_arrow_right</mat-icon>
+                                <div #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu"></div>
+                            </button>
+                            <mat-menu #menu="matMenu">
+                                <button mat-menu-item (click)="updateStatus()">Mark Complete</button>
+                            </mat-menu>
+                        </ng-template>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- <mat-grid-list cols="2" rowHeight="50:18" gutterSize="10px">
+                <mat-grid-tile [colspan]="2">
+                    <div class="text-inside-grid">
+                        <div class="label">Report ID</div>
+                        <div>{{ report.id }}</div>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="2">
+                    <div class="text-inside-grid">
+                        <div>Created by <a class="clickable" (click)="openUserDialog(report.createdBy)">{{ report.author.name }}</a> at {{report.createdAt.toDate() | date:'dd MMM yyyy h:mma'}}</div>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <div class="text-inside-grid">
+                        <div class="label">Category</div>
+                        <div>{{ report.category }}</div>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <div class="text-inside-grid">
+                        <div class="label">Subcategory</div>
+                        <div>{{ report.subCategory }}</div>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <div class="text-inside-grid">
+                        <div class="label">Title</div>
+                        <div>{{ report.title }}</div>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <div class="text-inside-grid">
+                        <div class="label">Description</div>
+                        <div>{{ report.description }}</div>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <div class="text-inside-grid">
+                        <div class="label">Suggestion</div>
+                        <div>{{ report.suggestion }}</div>
+                    </div>
+                </mat-grid-tile>
+            </mat-grid-list> -->
+        </div>
+        <!-- <div mat-dialog-actions align="center">
+            <button mat-button class="dialogBtn" style="background-color: sandybrown; right: 20px;" tabindex=-1 (click)="updateStatus()">{{report.status=="Pending"?'Mark As Completed':'Unmark As Completed'}}</button>
+        </div> -->
+    </div>
+</div>

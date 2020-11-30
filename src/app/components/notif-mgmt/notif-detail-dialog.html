@@ -1,0 +1,131 @@
+<div class="dialog-container">
+    <mat-toolbar>
+        <span class="dialog-title" [ngSwitch]="fn">
+            <span *ngSwitchCase="0">Notification Detail</span>
+            <span *ngSwitchCase="1">Edit Notification Detail</span>
+            <span *ngSwitchCase="2">Add New Notification</span>
+        </span>
+        <button mat-icon-button class="closeBtn" tabindex=-1 (click)="closeDialog()">
+            <mat-icon style="background: none;">close</mat-icon>
+        </button>
+    </mat-toolbar>
+    <div *ngIf="fn==0; else other_content">
+        <div mat-dialog-content>
+            <table>
+                <tr>
+                    <td class="label">Notification ID</td>
+                    <td>{{ notif.id }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Sent To</td>
+                    <td>
+                        <a *ngIf="notif.sentTo!='ALL';else normal_text" class="clickable" (click)="openUserDialog(notif.sentTo)">{{ notif.sentTo }}<mat-icon class="arrow">arrow_right</mat-icon></a>
+                        <ng-template #normal_text>{{ notif.sentTo }}</ng-template>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">Sent At</td>
+                    <td>{{notif.sentAt.toDate() | date:'dd MMM yyyy h:mma'}}</td>
+                </tr>
+                <tr>
+                    <td class="label">Title</td>
+                    <td>{{ notif.title }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Content</td>
+                    <td>{{ notif.content }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Image Header</td>
+                    <td>
+                        <img *ngIf="notif.imageHeader!=null; else no_img" src={{notif.imageHeader}} style="max-height: 380px; max-width: 380px;"/>
+                        <ng-template #no_img>-</ng-template>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">Created By</td>
+                    <td><a class="clickable" (click)="openUserDialog(notif.createdBy)">{{ notif.createdBy.id }}<mat-icon class="arrow">arrow_right</mat-icon></a></td>
+                </tr>
+                <tr>
+                    <td class="label">Created At</td>
+                    <td>{{ notif.createdAt.toDate() | date:'dd MMM yyyy h:mma'}}</td>
+                </tr>
+            </table>
+        </div>
+        <div mat-dialog-actions align="center">
+            <button mat-button class="dialogBtn" style="background-color: sandybrown; right: 20px;" tabindex=-1 (click)="edit()">Edit</button>
+            <button mat-button class="dialogBtn" style="background-color: gray; left: 20px;" tabindex=-1 (click)="delete()">Delete</button>
+        </div>
+    </div>
+    <ng-template #other_content>
+        <form [formGroup]="notifForm" (ngSubmit)="onSubmit()">
+            <div mat-dialog-content>
+                <table>
+                    <tr *ngIf="fn==1">
+                        <td class="label">Notification ID</td>
+                        <td>{{ notif.id }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Sent To</td>
+                        <td>
+                            <mat-form-field appearance="outline">
+                                <mat-select formControlName="sentTo" required>
+                                    <input matInput class="yourClass" style="padding: 10px; width: 94%;" placeholder ="Search" (keyup)="onKey($event.target.value)"> 
+                                    <mat-option value="ALL">All Users</mat-option>
+                                    <mat-option *ngFor="let user of sentToOptions" [value]="user.id">{{user.id}}</mat-option>
+                                  </mat-select>
+                                <mat-error *ngIf="notifForm.get('sentTo').hasError('required')">Sent To is required.</mat-error>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">Sent At</td>
+                        <td>
+                            <mat-form-field appearance="outline">
+                                <input matInput [ngxMatDatetimePicker]="picker" formControlName="sentAt">
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <ngx-mat-datetime-picker #picker [enableMeridian]=true [showSeconds]=true></ngx-mat-datetime-picker>
+                              </mat-form-field>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">Title</td>
+                        <td>
+                            <mat-form-field appearance="outline">
+                                <input matInput type="text" formControlName="title" required/>
+                                <mat-error *ngIf="notifForm.get('title').hasError('required')">Title is required.</mat-error>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">Content</td>
+                        <td>
+                            <mat-form-field appearance="outline">
+                                <input matInput type="text" formControlName="content" required/>
+                                <mat-error *ngIf="notifForm.get('content').hasError('required')">Content is required.</mat-error>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">Image Header</td>
+                        <td>
+                            <img src={{url}} style="max-height: 380px; max-width: 380px;"/>
+                            <input #imageInput type="file" id="file" name="image" (change)="onFileSelected($event)" autocomplete="off"/>
+                        </td>
+                    </tr>
+                    <tr *ngIf="fn==1">
+                        <td class="label">Created By</td>
+                        <td><a class="clickable" (click)="openUserDialog(notif.createdBy)">{{ notif.createdBy.id }}<mat-icon class="arrow">arrow_right</mat-icon></a></td>
+                    </tr>
+                    <tr *ngIf="fn==1">
+                        <td class="label">Created At</td>
+                        <td>{{ notif.createdAt.toDate() | date:'dd MMM yyyy h:mma'}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div mat-dialog-actions align="center">
+                <button mat-button class="dialogBtn" style="background-color: sandybrown;" tabindex=-1 type="submit" [disabled]="!notifForm.valid">Save</button>
+            </div>
+        </form>
+    </ng-template>
+</div>

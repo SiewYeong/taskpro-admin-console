@@ -68,10 +68,9 @@
 .label {
     font-size: 17px; 
     color:#363E3F;
-}
-
-.field-value {
-    padding-top: 10px;
+    font-weight: bold;
+    width: 130px;
+    padding-right: 10px;
 }
 
 .text-inside-grid {
@@ -88,22 +87,17 @@
 
 table {
     border-collapse: collapse;
-    width: 100%;
 }
 
 td {
-    border: 2px solid sandybrown;
-    padding: 10px;
-    text-align: center;
+    text-align: left;
+    vertical-align: top;
+    padding-top: 10px;
+    word-wrap: break-word;
+    max-width: 390px;
 }
 
-.table-label {
-    font-weight: bold;
-    color: white;
-    background-color: sandybrown;
-    padding: 0;
-}
-
-mat-card-content {
-    width: 100%;
+.mat-form-field {
+    width: 350px;
+    margin-top: -0.6em;
 }

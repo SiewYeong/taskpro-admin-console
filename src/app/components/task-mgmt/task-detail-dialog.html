@@ -1,0 +1,207 @@
+<div class="dialog-container">
+    <mat-toolbar>
+        <span class="dialog-title">Task Detail</span>
+        <button mat-icon-button class="closeBtn" tabindex=-1 (click)="closeDialog()">
+            <mat-icon style="background: none;">close</mat-icon>
+        </button>
+    </mat-toolbar>
+    <div>
+        <div mat-dialog-content [ngStyle]="{'height': task.status!='Cancelled' ? '400px' : '460px'}">
+            <mat-grid-list cols="6" rowHeight="3:2" gutterSize="10px">
+                <mat-grid-tile>
+                    <img src={{task.author.profile_pic}} style="height: 50px; width: 50px; border-radius: 50%;"/>
+                </mat-grid-tile>
+                <mat-grid-tile colspan="5">
+                    <mat-card-content>
+                        <span style="font-weight: bold; font-size: 17px;"><a class="clickable" (click)="openUserDialog(task.created_by)">{{task.author.name}}<mat-icon class="arrow">arrow_right</mat-icon></a></span><br>
+                        <span>{{task.created_at.toDate() | date:'dd MMM yyyy h:mma'}}</span>
+                    </mat-card-content>
+                </mat-grid-tile>
+                <mat-grid-tile colspan="4">
+                    <mat-card-content>
+                        <span style="font-weight: bold; font-size: 20px;">{{task.title}}</span><br>
+                        <span style="color: gray; font-size: 12px;">ID: {{task.id}}</span>
+                    </mat-card-content>
+                </mat-grid-tile>
+                <mat-grid-tile colspan="2">
+                    <mat-card-content style="text-align: right; padding-right: 10px;">
+                        <span style="font-weight: bold; border: 2px solid sandybrown; border-radius: 10px; padding: 5px; color: sandybrown;">{{task.status}}</span>
+                    </mat-card-content>
+                </mat-grid-tile>
+            </mat-grid-list>
+            <table>
+                <tr><td colspan="6" class="table-label">Task Category</td></tr>
+                <tr><td colspan="6">{{task.category}}</td></tr>
+                <tr><td colspan="6" class="table-label">Task Description</td></tr>
+                <tr><td colspan="6" style="text-align: left;">{{task.description}}</td></tr>
+                <tr><td colspan="6" class="table-label">Additional Description</td></tr>
+                <tr><td colspan="6" style="text-align: left;">{{task.additional_instruction!='' ? task.additional_instruction:'-'}}</td></tr>
+                <tr>
+                    <td colspan="2" class="table-label" style="width: 33%;">Task Deadline</td>
+                    <td colspan="2" class="table-label" style="width: 33%;">Location</td>
+                    <td colspan="2" class="table-label" style="width: 33%;">Fee</td>
+                </tr>
+                <tr>
+                    <td colspan="2">{{task.task_deadline.toDate() | date:'dd MMM yyyy'}}<br>{{task.task_deadline.toDate() | date:'h:mma'}}</td>
+                    <td colspan="2">{{task.location!='' ? task.location:'-'}}</td>
+                    <td colspan="2">RM{{task.fee}}</td>
+                </tr>
+                <tr><td colspan="6" class="table-label">Tag(s)</td></tr>
+                <tr><td colspan="6">{{task.tags!='' ? task.tags:'-'}}</td></tr>
+                <tr><td colspan="6" class="table-label">Offered By</td></tr>
+                <tr><td colspan="6">
+                    <a *ngIf="providerId!=null; else none_text" class="clickable" (click)="openUserDialog(task.offered_by)">{{ providerId }}<mat-icon class="arrow">arrow_right</mat-icon></a>
+                    <ng-template #none_text>-</ng-template>
+                </td></tr>
+                <tr><td colspan="6" class="table-label">Offer Deadline</td></tr>
+                <tr><td colspan="6">{{task.offer_deadline.toDate() | date:'dd MMM yyyy h:mma'}}</td></tr>
+                <tr><td colspan="6" class="table-label">No. of Offer Received</td></tr>
+                <tr><td colspan="6">{{task.offer_num}}</td></tr>
+                <tr><td colspan="6" class="table-label">Mark As Completed</td></tr>
+                <tr>
+                    <td colspan="3" class="table-label">By Authour</td>
+                    <td colspan="3" class="table-label">By Provider</td>
+                </tr>
+                <tr>
+                    <td colspan="3">{{task.is_complete_by_author}}</td>
+                    <td colspan="3">{{task.is_complete_by_provider}}</td>
+                </tr>
+                <tr><td colspan="6" class="table-label">Rating</td></tr>
+                <tr><td colspan="6">{{task.rating!=null ? task.rating:'-'}}</td></tr>
+            </table>
+            <!-- <table>
+                <tr>
+                    <td class="label">Task ID</td>
+                    <td>{{ task.id }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Created By</td>
+                    <td><a class="clickable" (click)="openUserDialog(task.created_by)">{{ task.author.name }}<mat-icon class="arrow">arrow_right</mat-icon></a></td>
+                </tr>
+                <tr>
+                    <td class="label">Created At</td>
+                    <td>{{task.created_at.toDate() | date:'dd MMM yyyy h:mma'}}</td>
+                </tr>
+                <tr>
+                    <td class="label">Offered By</td>
+                    <td>
+                        <a *ngIf="providerId!=null; else none_text" class="clickable" (click)="openUserDialog(task.offered_by)">{{ providerId }}<mat-icon class="arrow">arrow_right</mat-icon></a>
+                        <ng-template #none_text>-</ng-template>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">Category</td>
+                    <td>{{ task.category }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Title</td>
+                    <td>{{ task.title }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Description</td>
+                    <td>{{ task.description }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Additional Instruction</td>
+                    <td>{{ task.additional_instruction }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Task Deadline</td>
+                    <td>{{task.task_deadline.toDate() | date:'dd MMM yyyy h:mma'}}</td>
+                </tr>
+                <tr>
+                    <td class="label">Location</td>
+                    <td>{{ task.location }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Fee</td>
+                    <td>RM{{ task.fee }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Tags</td>
+                    <td>{{ task.tags }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Offer Deadline</td>
+                    <td>{{task.offer_deadline.toDate() | date:'dd MMM yyyy h:mma'}}</td>
+                </tr>
+                <tr>
+                    <td class="label">No. of Offer Received</td>
+                    <td>{{ task.offer_num }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Mark As Completed</td>
+                    <td>Author: {{ task.is_complete_by_author }}<br/>Provider: {{ task.is_complete_by_provider }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Rating</td>
+                    <td>{{ task.rating!=null ? task.rating : '-' }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Status</td>
+                    <td>{{ task.status }}</td>
+                </tr>
+            </table> -->
+            <!-- <mat-grid-list cols="2" rowHeight="50:18" gutterSize="10px">
+                <mat-grid-tile>
+                    <div class="text-inside-grid">
+                        <div class="label">Task ID</div>
+                        <div>{{ task.id }}</div>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <div class="text-inside-grid">
+                        <div class="label">Created At</div>
+                        <div>{{task.created_at.toDate() | date:'dd MMM yyyy'}}<br>{{task.created_at.toDate() | date:'h:mma'}}</div>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <div class="text-inside-grid">
+                        <div class="label">Title</div>
+                        <div>{{ task.title }}</div>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <div class="text-inside-grid">
+                        <div class="label">Description</div>
+                        <div>{{ task.description }}</div>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <div class="text-inside-grid">
+                        <div class="label">Additional Instruction</div>
+                        <div>{{ task.additional_instruction }}</div>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <div class="text-inside-grid">
+                        <div class="label">Location</div>
+                        <div>{{ task.location }}</div>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <div class="text-inside-grid">
+                        <div class="label">Fee</div>
+                        <div>{{ task.fee }}</div>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <div class="text-inside-grid">
+                        <div class="label">Status</div>
+                        <div [ngSwitch]="user.status">
+                            <button *ngSwitchCase="0" mat-stroked-button disabled style="border-color: green; color: green;">
+                                Active
+                            </button>
+                            <button *ngSwitchCase="1" mat-stroked-button disabled style="border-color: red; color: red;">
+                                Inactive
+                            </button>
+                        </div>
+                    </div>
+                </mat-grid-tile>
+            </mat-grid-list> -->
+        </div>
+        <div mat-dialog-actions align="center" *ngIf="task.status!='Cancelled'">
+            <button mat-button class="dialogBtn" style="background-color: gray;" tabindex=-1 (click)="cancelTask()">Cancel Task</button>
+        </div>
+    </div>
+</div>

@@ -1,20 +1,15 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Location } from "@angular/common";
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { Task } from '../../models/task';
-
-export class Author {
-  name: string;
-  profile_pic: string;
-  constructor() {}
-}
-export class Provider {
-  name: string;
-  constructor() {}
-}
+import { TaskService } from 'src/app/services/task.service';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { UserService } from 'src/app/services/user.service';
+import { UserDetailDialog } from '../user-mgmt/user-mgmt.component';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { NotifService } from 'src/app/services/notif.service';
+import { Notification } from 'src/app/models/notification';
 
 @Component({
   selector: 'app-task-mgmt',
@@ -23,56 +18,113 @@ export class Provider {
 })
 export class TaskMgmtComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'title', 'consumer', 'provider', 'status'];
+  displayedColumns: string[] = ['id', 'title', 'author', 'status'];
   dataSource: MatTableDataSource<Task>;
   tasks: Task[] = [];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private afs: AngularFirestore, private location: Location) { 
+  constructor(private taskService: TaskService, public dialog: MatDialog) { 
   }
 
   ngOnInit() {
-    this.afs.collection<any>('task').valueChanges().subscribe(data => {
-      this.dataSource = new MatTableDataSource(this.tasks);
-      for(let i of data) {
-        let task: Task = new Task();
-        task.id = i.id;
-        task.title = i.title;
-        task.content = i.description ?? '-';
-        if(i.author != null) {
-          let author: Author = i.author;
-          task.consumer = author.name ?? '-';
-        }
-        if(i.service_provider != null) {
-          let provider: Provider = i.service_provider;
-          task.provider = provider.name ?? '-';
-        }
-        task.status = i.status;
-        this.tasks.push(task);
-      }
+    this.setupTable();
+  }
+
+  setupTable() {
+    this.taskService.getAllTask().subscribe(result => {
+      this.dataSource = new MatTableDataSource(result);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     })
   }
 
-  // ngAfterViewInit() {
-  //   this.dataSource.paginator = this.paginator;
-  //   this.dataSource.sort = this.sort;
-  // }
-
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.dataSource.filterPredicate = (data: Task, filter: string) => data.id.toLowerCase().indexOf(filter) != -1 || data.title.toLowerCase().indexOf(filter) != -1;
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
   }
 
-  // back(){
-  //   this.location.back();
-  // }
+  openTaskDialog(task) {
+    const dialogRef = this.dialog.open(TaskDetailDialog, {
+      data: task,
+      height: "560px",
+      width: "600px"
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result=="refreshTable") {
+        this.setupTable();
+      }
+    });
+  }
 
+}
+
+@Component({
+  selector: 'task-detail-dialog',
+  templateUrl: './task-detail-dialog.html',
+  styleUrls: ['./task-detail-dialog.scss']
+})
+export class TaskDetailDialog implements OnInit {
+
+  task: Task;
+  providerId: string;
+
+  constructor(public dialogRef: MatDialogRef<TaskDetailDialog>, private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: Task, private taskService: TaskService, private userService: UserService, private notifService: NotifService) {    
+  }
+
+  ngOnInit() {
+    this.task = this.data;
+    if(this.task.offered_by!=null&&this.task.offered_by!="") {
+      this.providerId = this.task.offered_by.id;
+    }
+  }
+
+  cancelTask() {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: {
+        title: "Cancel Confirmation",
+        message: "Are you sure you want to cancel this task? This action cannot be undone.",
+        enableCancel: true
+      },
+      height: "260px",
+      width: "360px"
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result=="Confirm") {
+        this.task.status = "Cancelled";
+        this.taskService.updateTask(this.task,{
+          status: this.task.status
+        });
+        var notif = new Notification();
+        notif.sentTo = this.task.created_by.id;
+        notif.sentAt = new Date();
+        notif.title = "Task is Cancelled";
+        notif.content = "Your task (ID: "+this.task.id+") has been cancelled by the admin.";
+        this.notifService.addNotif(notif, null, true);
+      }
+    });
+  }
+
+  closeDialog(msg: string = ""){
+    this.dialogRef.close(msg);
+  }
+
+  openUserDialog(userRef: any) {
+    this.userService.getUser(userRef).subscribe(result => {
+      const dialogRef = this.dialog.open(UserDetailDialog, {
+        data: {
+          user: result,
+          dialogFn: 0
+        },
+        height: "560px",
+        width: "600px"
+      });
+    });
+  }
 }

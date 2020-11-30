@@ -19,8 +19,9 @@
 
 .mat-dialog-content {
     margin: 20px 10px 0px 10px;
-    height: 400px;
+    height: 460px;
 }
+
 .editBtn {
     position: absolute;
     background: none;
@@ -36,27 +37,40 @@
 }
 
 .statusBtn {
-    width: 100px;
+    width: 110px;
+    padding: 0 12px;
     //color: white;
     border-style: solid;
     border-width: 1px;
     .mat-icon {
         font-size: 21px !important;
     }
+    .mat-menu-trigger {
+        position: absolute;
+        top: 0;
+        right: -1px;
+      }
 }
 
-.mat-button {
-    .mat-menu-trigger {
-      position: absolute;
-      top: 0;
-      right: -1px;
+.assignBtn {
+    width: 250px;
+    padding: 0 12px;
+    border-style: solid;
+    border-width: 1px;
+    .mat-icon {
+        font-size: 21px !important;
     }
+    .mat-menu-trigger {
+        position: absolute;
+        top: 0;
+        right: -1px;
+      }
 }
 
 .dialogBtn {
     font-size: 18px;
     color: white;
-    width: 160px;
+    width: 220px;
     position: relative;
 }
 
@@ -68,10 +82,9 @@
 .label {
     font-size: 17px; 
     color:#363E3F;
-}
-
-.field-value {
-    padding-top: 10px;
+    font-weight: bold;
+    width: 130px;
+    padding-right: 10px;
 }
 
 .text-inside-grid {
@@ -82,28 +95,28 @@
     background-color: transparent!important;
 }
 
-::ng-deep .mat-select-arrow-wrapper {
-    padding-top: 10px;
-}
-
 table {
     border-collapse: collapse;
-    width: 100%;
 }
 
 td {
-    border: 2px solid sandybrown;
-    padding: 10px;
-    text-align: center;
+    text-align: left;
+    vertical-align: top;
+    padding-top: 10px;
 }
 
-.table-label {
-    font-weight: bold;
-    color: white;
-    background-color: sandybrown;
-    padding: 0;
+
+.handling {
+    color: sandybrown;
+    border-color: sandybrown;
 }
 
-mat-card-content {
-    width: 100%;
+.pending {
+    color: red;
+    border-color: red;
+}
+
+.completed {
+    color: green;
+    border-color: green;
 }

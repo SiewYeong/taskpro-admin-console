@@ -7,6 +7,7 @@ export class User {
     joined: any;
     status: number;
     role: string;
+    deleted_at: any;
     
     constructor(
         id?: string,
@@ -16,15 +17,7 @@ export class User {
         email?: string,
         joined?: any,
         status?: number,
-        role?: string
-        ) {
-            this.id = id;
-            this.idnum = idnum;
-            this.name = name;
-            this.ph_num = ph_num;
-            this.email = email;
-            this.joined = joined;
-            this.status = status;
-            this.role = role;
-    }
+        role?: string,
+        deleted_at?: any
+        ) { }
 }

@@ -19,6 +19,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [],
@@ -41,7 +42,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatTableModule,
     MatDialogModule,
     MatGridListModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatTabsModule
   ],
   exports: [
     CommonModule,
@@ -63,7 +65,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatSortModule,
     MatDialogModule,
     MatGridListModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatTabsModule
   ]
 })
 export class NgMaterialModule { }

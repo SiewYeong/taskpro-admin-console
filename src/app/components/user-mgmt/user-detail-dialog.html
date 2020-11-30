@@ -11,7 +11,7 @@
     </mat-toolbar>
     <div *ngIf="fn==0; else other_content">
         <div mat-dialog-content>
-            <mat-grid-list cols="2" rowHeight="20:7" gutterSize="20px">
+            <mat-grid-list cols="2" rowHeight="50:18" gutterSize="10px">
                 <mat-grid-tile>
                     <div class="text-inside-grid">
                         <div class="label">User ID</div>
@@ -55,32 +55,48 @@
                     </div>
                 </mat-grid-tile>
                 <mat-grid-tile>
-                    <div class="text-inside-grid">
+                    <div class="text-inside-grid" *ngIf="canbeUpdated; else disabled_statusbtn">
                         <div class="label">Status</div>
                         <div [ngSwitch]="user.status" class="field-value">
-                            <button *ngSwitchCase="0" mat-stroked-button disabled style="border-color: green; color: green;">
-                                Active
+                            <button *ngSwitchCase="0" mat-button class="statusBtn" type="button" style="border-color: green; color: green;" (click)="menuTrigger.openMenu()" tabindex=-1>
+                                Active<mat-icon>keyboard_arrow_right</mat-icon>
+                                <div #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu"></div>
                             </button>
-                            <button *ngSwitchCase="1" mat-stroked-button disabled style="border-color: red; color: red;">
-                                Inactive
+                            <button *ngSwitchCase="1" mat-button class="statusBtn" type="button" style="border-color: red; color: red;" (click)="menuTrigger.openMenu()" tabindex=-1>
+                                Inactive<mat-icon>keyboard_arrow_right</mat-icon>
+                                <div #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu"></div>
                             </button>
                         </div>
-                        <!-- <mat-menu #menu="matMenu" y-position="below">
-                            <button mat-menu-item (click)="changeStatus(user)">{{user.status==0 ? 'Deactivate':'Activate'}}</button>
-                        </mat-menu> -->
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item (click)="updateStatus()">{{user.status==0 ? 'Deactivate':'Activate'}}</button>
+                        </mat-menu>
                     </div>
+                    <ng-template #disabled_statusbtn>
+                        <div class="text-inside-grid">
+                            <div class="label">Status</div>
+                            <div [ngSwitch]="user.status" class="field-value">
+                                <button *ngSwitchCase="0" mat-stroked-button disabled class="statusBtn" type="button" style="border-color: green; color: green;">
+                                    Active
+                                </button>
+                                <button *ngSwitchCase="1" mat-stroked-button disabled class="statusBtn" type="button" style="border-color: red; color: red;">
+                                    Inactive
+                                </button>
+                            </div>
+                        </div>
+                    </ng-template>
                 </mat-grid-tile>
             </mat-grid-list>
         </div>
         <div mat-dialog-actions align="center">
-            <button mat-button class="dialogBtn" style="background-color: sandybrown; right: 20px;" tabindex=-1 (click)="edit()">Edit</button>
-            <button mat-button class="dialogBtn" style="background-color: gray; left: 20px;" tabindex=-1 (click)="delete()">Delete</button>
+            <!-- <button mat-button class="dialogBtn" style="background-color: sandybrown; right: 20px;" tabindex=-1 (click)="edit()">Edit</button> -->
+            <button mat-button class="dialogBtn" style="background-color: sandybrown;" [ngStyle]="canbeUpdated?{'right': '20px'}:{}" tabindex=-1 *ngIf="user.role=='user'" (click)="openProfileDialog()">View Profile</button>
+            <button mat-button class="dialogBtn" style="background-color: gray;" [ngStyle]="user.role=='user'?{'left': '20px'}:{}" tabindex=-1 *ngIf="canbeUpdated" (click)="delete()">Delete</button>
         </div>
     </div>
     <ng-template #other_content>
         <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
-            <div mat-dialog-content #other_content>
-                <mat-grid-list cols="2" rowHeight="20:7" gutterSize="20px">
+            <div mat-dialog-content>
+                <mat-grid-list cols="2" rowHeight="50:18" gutterSize="10px">
                     <mat-grid-tile *ngIf="fn==1">
                         <div class="text-inside-grid">
                             <div class="label">User ID</div>
@@ -132,10 +148,40 @@
                             </mat-form-field>
                         </div>
                     </mat-grid-tile>
+                    <mat-grid-tile *ngIf="fn==2">
+                        <div class="text-inside-grid">
+                            <div class="label">Password</div>
+                            <mat-form-field appearance="outline">
+                                <input matInput type="password" formControlName="password" required/>
+                                <mat-error *ngIf="userForm.get('password').hasError('required')">Password is required.</mat-error>
+                                <mat-error *ngIf="userForm.get('password').hasError('pattern')">Minimum 8 characters, including digit, lower and upper case letters.</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile *ngIf="fn==2">
+                        <div class="text-inside-grid">
+                            <div class="label">Confirm Password</div>
+                            <mat-form-field appearance="outline">
+                                <input matInput type="password" formControlName="confirm_password" required/>
+                                <mat-error *ngIf="userForm.get('confirm_password').hasError('required')">Confirm Password is required.</mat-error>
+                                <!-- <mat-error *ngIf="userForm.hasError('notSame')">Passwords do not match.</mat-error> -->
+                                <mat-error *ngIf="confirmPwdError">Passwords do not match.</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </mat-grid-tile>
                     <mat-grid-tile>
                         <div class="text-inside-grid">
                             <div class="label">Role</div>
-                            <div class="field-value">{{ user.role.toUpperCase() }}</div>
+                            <div class="field-value">
+                                <mat-form-field appearance="outline" *ngIf="fn==2; else show_role">
+                                    <mat-select formControlName="role" required>
+                                        <mat-option value="super admin" >SUPER ADMIN</mat-option>
+                                        <mat-option value="support admin" >SUPPORT ADMIN</mat-option>
+                                        <mat-option value="helpdesk admin" >HELPDESK ADMIN</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <ng-template #show_role>{{ user.role.toUpperCase() }}</ng-template>
+                            </div>
                         </div>
                     </mat-grid-tile>
                     <mat-grid-tile>

@@ -3,18 +3,20 @@
     <ul class="sidenav">
       <mat-nav-list>
         <ng-container *ngFor="let menu of MENUS">
-          <a mat-list-item [routerLink]="menu.naviPath"  tabindex=-1 (click)="sidenav.toggle()">{{menu.name}}</a>
+          <a mat-list-item [routerLink]="menu.naviPath"  tabindex=-1 (click)="toggle(menu)">{{menu.name}}</a>
         </ng-container>
       </mat-nav-list>
     </ul>
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <mat-toolbar>
-      <button class="menuBtn" type="button" aria-label="Toggle sidenav" (click)="sidenav.toggle()">
+    <mat-toolbar class="app-toolbar">
+      <button *ngIf="authService.isLoggedIn" class="menuBtn" type="button" aria-label="Toggle sidenav" (click)="sidenav.toggle()">
         <mat-icon aria-label="Sidenav toggle icon">menu</mat-icon>
       </button>
       <span class="app-name">TaskPro Admin Console</span>
+      <span flex></span>
+      <span *ngIf="authService.isLoggedIn" class="username">{{authService.user ? authService.user.name:'Admin'}}</span>
     </mat-toolbar>
 
     <div class="loggedContainer">
