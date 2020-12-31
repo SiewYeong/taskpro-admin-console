@@ -1,131 +1,77 @@
-<div class="moduleTitle">ACCOUNT SETTING</div>
+<div class="loggedContainer">
+    <div class="moduleTitle">ACCOUNT SETTING</div>
 
-<section class="acc-setting-container">
-    <table>
-        <tr class="border-bottom">
-            <td class="label">User ID</td>
-            <td class="desc">{{ user.id }}</td>
-            <td class="editBtn"></td>
-        </tr>
-        <tr class="border-bottom">
-            <td class="label">User Name</td>
-            <ng-container *ngIf="editName; else show_name">
-                <td class="desc">
-                    <mat-form-field appearance="outline">
-                        <input matInput type="text" [formControl]="nameFormControl" required/>
-                    </mat-form-field>
-                </td>
-                <td class="editBtn">
-                    <button mat-button class="saveBtn" [disabled]="!nameFormControl.valid" (click)="save('user name')">Save</button>
-                    <button mat-button class="cancelBtn" (click)="changeEditValue('name')">Cancel</button>
-                </td>
-            </ng-container>
-            <ng-template #show_name>
-                <td class="desc">{{ user.name }}</td>
-                <td class="editBtn" (click)="changeEditValue('name')"><span>Edit</span></td>
-            </ng-template>
-        </tr>
-        <tr class="border-bottom">
-            <td class="label">IC/Passport No.</td>
-            <ng-container *ngIf="editIdnum; else show_idnum">
-                <td class="desc">
-                    <mat-form-field appearance="outline">
-                        <input matInput type="text" [formControl]="idnumFormControl" required/>
-                    </mat-form-field>
-                </td>
-                <td class="editBtn">
-                    <button mat-button class="saveBtn" [disabled]="!idnumFormControl.valid" (click)="save('IC/passport no.')">Save</button>
-                    <button mat-button class="cancelBtn" (click)="changeEditValue('idnum')">Cancel</button>
-                </td>
-            </ng-container>
-            <ng-template #show_idnum>
-                <td class="desc">{{ user.idnum }}</td>
-                <td class="editBtn" (click)="changeEditValue('idnum')"><span>Edit</span></td>
-            </ng-template>
-        </tr>
-        <tr class="border-bottom">
-            <td class="label">Contact No.</td>
-            <ng-container *ngIf="editPhnum; else show_phnum">
-                <td class="desc">
-                    <mat-form-field appearance="outline">
-                        <input matInput type="text" [formControl]="phnumFormControl" required/>
-                    </mat-form-field>
-                </td>
-                <td class="editBtn">
-                    <button mat-button class="saveBtn" [disabled]="!phnumFormControl.valid" (click)="save('contact no.')">Save</button>
-                    <button mat-button class="cancelBtn" (click)="changeEditValue('phnum')">Cancel</button>
-                </td>
-            </ng-container>
-            <ng-template #show_phnum>
-                <td class="desc">{{ user.ph_num }}</td>
-                <td class="editBtn" (click)="changeEditValue('phnum')"><span>Edit</span></td>
-            </ng-template>
-        </tr>
-        <tr class="border-bottom">
-            <td class="label">Email</td>
-            <td class="desc">{{ user.email }}</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td class="label">Password</td>
-            <td class="desc">********</td>
-            <td class="editBtn" (click)="sendPwdResetEmail()"><span>Send Password Reset Email</span></td>
-        </tr>
-    </table>
-    <!-- <mat-grid-list cols="3" rowHeight="7:1" gutterSize="20px">
-        <mat-grid-tile>
-            <div class="label">User ID</div>
-        </mat-grid-tile>
-        <mat-grid-tile colspan="2">
-            <div class="text-inside-grid">{{ user.id }}</div>
-        </mat-grid-tile>
-        <mat-grid-tile colspan='3'>
-            <mat-divider style="width: 100%;"></mat-divider>
-        </mat-grid-tile>
-        <mat-grid-tile>
-            <div class="label">User Name</div>
-        </mat-grid-tile>
-        <mat-grid-tile>
-            <div class="text-inside-grid">{{ user.name }}</div>
-        </mat-grid-tile>
-        <mat-grid-tile>
-            <div class="editBtn text-inside-grid">Edit</div>
-        </mat-grid-tile>
-        <mat-grid-tile>
-            <div class="label">IC/Passport No.</div>
-        </mat-grid-tile>
-        <mat-grid-tile>
-            <div class="text-inside-grid">{{ user.idnum }}</div>
-        </mat-grid-tile>
-        <mat-grid-tile>
-            <div class="editBtn text-inside-grid">Edit</div>
-        </mat-grid-tile>
-        <mat-grid-tile>
-            <div class="label">Contact No.</div>
-        </mat-grid-tile>
-        <mat-grid-tile>
-            <div class="text-inside-grid">{{ user.ph_num }}</div>
-        </mat-grid-tile>
-        <mat-grid-tile>
-            <div class="editBtn text-inside-grid">Edit</div>
-        </mat-grid-tile>
-        <mat-grid-tile>
-            <div class="label">Email</div>
-        </mat-grid-tile>
-        <mat-grid-tile>
-            <div class="text-inside-grid">{{ user.email }}</div>
-        </mat-grid-tile>
-        <mat-grid-tile>
-            <div class="editBtn text-inside-grid">Edit</div>
-        </mat-grid-tile>
-        <mat-grid-tile>
-            <div class="label">Password</div>
-        </mat-grid-tile>
-        <mat-grid-tile>
-            <div class="text-inside-grid">{{ displayPwd }}</div>
-        </mat-grid-tile>
-        <mat-grid-tile>
-            <div class="editBtn text-inside-grid">Edit</div>
-        </mat-grid-tile>
-    </mat-grid-list> -->
-</section>
+    <section class="acc-setting-container">
+        <table>
+            <tr class="border-bottom">
+                <td class="label">User ID</td>
+                <td class="desc">{{ user.id }}</td>
+                <td class="edit"></td>
+            </tr>
+            <tr class="border-bottom">
+                <td class="label">User Name</td>
+                <ng-container *ngIf="editName; else show_name">
+                    <td class="desc">
+                        <mat-form-field appearance="outline">
+                            <input matInput type="text" [formControl]="nameFormControl" required/>
+                        </mat-form-field>
+                    </td>
+                    <td class="edit">
+                        <button mat-button class="saveBtn" [disabled]="!nameFormControl.valid" (click)="save('user name')">Save</button>
+                        <button mat-button class="cancelBtn" (click)="changeEditValue('name')">Cancel</button>
+                    </td>
+                </ng-container>
+                <ng-template #show_name>
+                    <td class="desc">{{ user.name }}</td>
+                    <td class="edit" (click)="changeEditValue('name')"><span>Edit</span></td>
+                </ng-template>
+            </tr>
+            <tr class="border-bottom">
+                <td class="label">IC/Passport No.</td>
+                <ng-container *ngIf="editIdnum; else show_idnum">
+                    <td class="desc">
+                        <mat-form-field appearance="outline">
+                            <input matInput type="text" [formControl]="idnumFormControl" required/>
+                        </mat-form-field>
+                    </td>
+                    <td class="edit">
+                        <button mat-button class="saveBtn" [disabled]="!idnumFormControl.valid" (click)="save('IC/passport no.')">Save</button>
+                        <button mat-button class="cancelBtn" (click)="changeEditValue('idnum')">Cancel</button>
+                    </td>
+                </ng-container>
+                <ng-template #show_idnum>
+                    <td class="desc">{{ user.idnum }}</td>
+                    <td class="edit" (click)="changeEditValue('idnum')"><span>Edit</span></td>
+                </ng-template>
+            </tr>
+            <tr class="border-bottom">
+                <td class="label">Contact No.</td>
+                <ng-container *ngIf="editPhnum; else show_phnum">
+                    <td class="desc">
+                        <mat-form-field appearance="outline">
+                            <input matInput type="text" [formControl]="phnumFormControl" required/>
+                        </mat-form-field>
+                    </td>
+                    <td class="edit">
+                        <button mat-button class="saveBtn" [disabled]="!phnumFormControl.valid" (click)="save('contact no.')">Save</button>
+                        <button mat-button class="cancelBtn" (click)="changeEditValue('phnum')">Cancel</button>
+                    </td>
+                </ng-container>
+                <ng-template #show_phnum>
+                    <td class="desc">{{ user.ph_num }}</td>
+                    <td class="edit" (click)="changeEditValue('phnum')"><span>Edit</span></td>
+                </ng-template>
+            </tr>
+            <tr class="border-bottom">
+                <td class="label">Email</td>
+                <td class="desc">{{ user.email }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="label">Password</td>
+                <td class="desc">********</td>
+                <td class="edit" (click)="sendPwdResetEmail()"><span>Send Password Reset Email</span></td>
+            </tr>
+        </table>
+    </section>
+</div>

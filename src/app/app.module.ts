@@ -18,7 +18,7 @@ import { UserDetailDialog, UserMgmtComponent, UserProfileDialog } from './compon
 import { ReportDetailDialog, ReportMgmtComponent } from './components/report-mgmt/report-mgmt.component';
 import { AccSettingComponent } from './components/acc-setting/acc-setting.component';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
-import { LoginComponent } from './components/login/login.component';
+import { LoginComponent, ForgotPwdDialog } from './components/login/login.component';
 import { AngularFireAuthGuard, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
 import { NotifMgmtComponent, NotifDetailDialog } from './components/notif-mgmt/notif-mgmt.component';
 import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
@@ -41,7 +41,8 @@ const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
     ConfirmationDialogComponent,
     LoginComponent,
     NotifMgmtComponent,
-    NotifDetailDialog
+    NotifDetailDialog,
+    ForgotPwdDialog
   ],
   imports: [
     BrowserModule,
@@ -70,7 +71,7 @@ const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
     NgxMatNativeDateModule,
     MatDatepickerModule
   ],
-  entryComponents: [UserDetailDialog, UserProfileDialog, TaskDetailDialog, ReportDetailDialog, NotifDetailDialog, ConfirmationDialogComponent],
+  entryComponents: [UserDetailDialog, UserProfileDialog, TaskDetailDialog, ReportDetailDialog, NotifDetailDialog, ConfirmationDialogComponent, ForgotPwdDialog],
   providers: [AngularFireAuthGuard],
   bootstrap: [AppComponent]
 })

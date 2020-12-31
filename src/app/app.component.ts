@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { AuthService } from './services/auth.service';
+import { SpinnerService } from './services/spinner.service';
 
 @Component({
   selector: 'app-root',
@@ -21,8 +22,12 @@ export class AppComponent {
   ];
   selectedMenuId: number;
   logoutMenuId = 7;
+  loading: boolean;
 
-  constructor(public authService: AuthService) {
+  constructor(public authService: AuthService, private spinnerService: SpinnerService) {
+    this.spinnerService.spinnerActive.subscribe(showSpinner => {
+      this.loading = showSpinner;
+    });
   }
 
   toggle(menu) {

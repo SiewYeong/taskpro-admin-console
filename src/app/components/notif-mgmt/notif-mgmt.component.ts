@@ -4,10 +4,12 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { firestore } from 'firebase';
 import { DialogData } from 'src/app/models/dialogData';
 import { Notification } from 'src/app/models/notification';
 import { User } from 'src/app/models/user';
 import { NotifService } from 'src/app/services/notif.service';
+import { SpinnerService } from 'src/app/services/spinner.service';
 import { UserService } from 'src/app/services/user.service';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { UserDetailDialog } from '../user-mgmt/user-mgmt.component';
@@ -87,8 +89,11 @@ export class NotifDetailDialog implements OnInit{
   url: any;
   users: User[];
   sentToOptions: Array<User>;
+  loading: boolean;
 
-  constructor(public dialogRef: MatDialogRef<NotifDetailDialog>, private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: DialogData, private notifService: NotifService, private userService: UserService) { }
+  constructor(public dialogRef: MatDialogRef<NotifDetailDialog>, private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: DialogData, private notifService: NotifService, private userService: UserService, private spinnerService: SpinnerService) { 
+    this.loading = false;
+  }
 
   ngOnInit() {
     this.notif = this.data.notif;
@@ -129,8 +134,10 @@ export class NotifDetailDialog implements OnInit{
     });
     dialogRef.afterClosed().subscribe(result => {
       if(result=="Confirm") {
+        this.loading = true;
         this.notifService.deleteNotif(this.notif).then(
           () => {
+            this.loading = false;
             this.closeDialog("refreshTable");
           }
         );
@@ -160,10 +167,11 @@ export class NotifDetailDialog implements OnInit{
 
   onSubmit() {
     this.notif.sentTo = this.notifForm.get('sentTo').value;
-    this.notif.sentAt = this.notifForm.get('sentAt').value;
+    this.notif.sentAt = firestore.Timestamp.fromDate(this.notifForm.get('sentAt').value);
     this.notif.title = this.notifForm.get('title').value;
     this.notif.content = this.notifForm.get('content').value;
     if(this.fn==1) { //edit
+      this.loading = true;
       this.notifService.uploadTaskPromise(this.imageFile, this.notif).then(() => {
         this.notifService.updateNotif(this.notif,{
           sentTo: this.notif.sentTo,
@@ -173,6 +181,7 @@ export class NotifDetailDialog implements OnInit{
           imageHeader: this.notif.imageHeader
         }).then(
           () => {
+            this.loading = false;
             this.closeDialog("refreshTable");
           }
         );
@@ -180,6 +189,7 @@ export class NotifDetailDialog implements OnInit{
     } else { //add
       this.notifService.addNotif(this.notif, this.imageFile, false).then(
         () => {
+          this.loading = false;
           this.closeDialog("refreshTable");
         }
       );
@@ -195,14 +205,26 @@ export class NotifDetailDialog implements OnInit{
       userRef = "/users/"+userRef;
     }
     this.userService.getUser(userRef).subscribe(result => {
-      const dialogRef = this.dialog.open(UserDetailDialog, {
-        data: {
-          user: result,
-          dialogFn: 0
-        },
-        height: "560px",
-        width: "600px"
-      });
+      if(result!=null) {
+        const dialogRef = this.dialog.open(UserDetailDialog, {
+          data: {
+            user: result,
+            dialogFn: 0
+          },
+          height: "560px",
+          width: "600px"
+        });
+      } else {
+        this.dialog.open(ConfirmationDialogComponent, {
+          data: {
+            title: "View User Message",
+            message: "User not found.",
+            enableCancel: false
+          },
+          height: "260px",
+          width: "360px"
+        });
+      }
     });
   }
 

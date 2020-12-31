@@ -118,9 +118,11 @@ export class UserDetailDialog implements OnInit{
   userForm: FormGroup;
   currentUser: User;
   canbeUpdated: boolean;
+  loading: boolean;
 
   constructor(public dialogRef: MatDialogRef<UserDetailDialog>, private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: DialogData, private userService: UserService, private authService: AuthService) {    
     this.currentUser = JSON.parse(localStorage.getItem('user'));
+    this.loading = false;
   }
 
   ngOnInit() {
@@ -216,12 +218,14 @@ export class UserDetailDialog implements OnInit{
     });
     dialogRef.afterClosed().subscribe(result => {
       if(result=="Confirm") {
+        this.loading = true;
         this.user.status = 2;
         this.userService.updateUser(this.user,{
           status: this.user.status,
           deleted_at: new Date()
         }).then(
           () => {
+            this.loading = false;
             this.closeDialog("refreshTable");
           }
         );
@@ -230,6 +234,7 @@ export class UserDetailDialog implements OnInit{
   }
 
   onSubmit() {
+    this.loading = true;
     this.user.name = this.userForm.get('name').value;
     this.user.idnum = this.userForm.get('idnum').value;
     this.user.ph_num = this.userForm.get('ph_num').value;
@@ -244,6 +249,7 @@ export class UserDetailDialog implements OnInit{
         status: this.user.status
       }).then(
         () => {
+          this.loading = false;
           this.closeDialog("refreshTable");
         }
       );
@@ -251,6 +257,7 @@ export class UserDetailDialog implements OnInit{
       this.user.role = this.userForm.get('role').value;
       this.userService.addAdmin(this.user, this.userForm.get('password').value).then(
         () => {
+          this.loading = false;
           this.closeDialog("refreshTable");
         }
       );
@@ -268,6 +275,16 @@ export class UserDetailDialog implements OnInit{
           data: result,
           height: "560px",
           width: "600px"
+        });
+      } else {
+        this.dialog.open(ConfirmationDialogComponent, {
+          data: {
+            title: "View Profile Message",
+            message: "User's profile not found.",
+            enableCancel: false
+          },
+          height: "260px",
+          width: "360px"
         });
       }
     });

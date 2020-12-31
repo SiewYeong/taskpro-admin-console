@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Task } from '../models/task';
 import { map } from 'rxjs/operators';
 import { ActionSequence } from 'protractor';
+import { Debit } from '../models/debit';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,9 @@ export class TaskService {
   constructor(private afs: AngularFirestore) { }
 
   getAllTask(): Observable<Task[]> {
-    const tasks = this.afs.collection<Task>('task').snapshotChanges().pipe(map(actions => {
+    const tasks = this.afs.collection<Task>('task', ref =>
+      ref.where('status','!=','Draft')
+    ).snapshotChanges().pipe(map(actions => {
         return actions.map(c => c.payload.doc.data());
       }));
     return tasks;
@@ -28,5 +31,16 @@ export class TaskService {
 
   updateTask(task: Task, data) {
     return this.afs.doc('task/'+task.id).update(data);
+  }
+
+  refund(task: Task) {
+    var debit = new Debit();
+    debit.amount = task.fee;
+    debit.category = "Refund";
+    debit.payout = false;
+    debit.status = "Success"
+    debit.taskRef = "/task/"+task.id;
+    debit.createdAt = new Date();
+    return this.afs.collection('wallet').doc(task.created_by.id).collection('debit').add(Object.assign({}, debit));
   }
 }

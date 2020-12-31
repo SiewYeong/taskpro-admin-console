@@ -23,6 +23,7 @@ export class Task {
     created_by: any; // reference
     updated_at: any;
     updated_by: any; // reference
+    debitId: string;
     
     constructor(
         id?: string,
@@ -47,7 +48,8 @@ export class Task {
         created_at?: any,
         created_by?: any,
         updated_at?: any,
-        updated_by?: any
+        updated_by?: any,
+        debitId?: string
     ) {
         this.description = '-';
     }

@@ -159,7 +159,13 @@ export class ReportDetailDialog implements OnInit {
 
   ngOnInit() {
     this.report = this.data;
-    this.assignToText = this.report.assignTo!=null ? this.report.assignTo : "Select an admin";
+    if(this.report.assignTo!=null) {
+      this.userService.getUser("/users/"+this.report.assignTo).subscribe(result => {
+        this.assignToText = result!=null ? result.name : "Admin Not Found";
+      });
+    } else {
+      this.assignToText = "Select an admin";
+    }
     this.userService.getSuperAdmins().subscribe(result => {
       this.superadmins = result;
     });
@@ -185,13 +191,15 @@ export class ReportDetailDialog implements OnInit {
         this.reportService.updateReport(this.report, {
           assignTo: this.report.assignTo,
           status: this.report.status
+        }).then(() => {
+          this.assignToText = name;
+          var notif = new Notification();
+          notif.sentTo = this.report.createdBy.id;
+          notif.sentAt = new Date();
+          notif.title = "Report In Progress";
+          notif.content = "Your report (ID: "+this.report.id+") has been assigned to admin "+name+".";
+          this.notifService.addNotif(notif, null, true);
         });
-        var notif = new Notification();
-        notif.sentTo = this.report.createdBy.id;
-        notif.sentAt = new Date();
-        notif.title = "Report In Progress";
-        notif.content = "Your report (ID: "+this.report.id+") has been assigned to admin "+name+".";
-        this.notifService.addNotif(notif, null, true);
       }
     });
   }
@@ -228,24 +236,48 @@ export class ReportDetailDialog implements OnInit {
 
   openTaskDialog(taskRef: any) {
     this.taskService.getTask(taskRef).subscribe(result => {
-      const dialogRef = this.dialog.open(TaskDetailDialog, {
-        data: result,
-        height: "560px",
-        width: "600px"
-      });
+      if(result!=null) {
+        const dialogRef = this.dialog.open(TaskDetailDialog, {
+          data: result,
+          height: "560px",
+          width: "600px"
+        });
+      } else {
+        this.dialog.open(ConfirmationDialogComponent, {
+          data: {
+            title: "View Task Message",
+            message: "Task not found.",
+            enableCancel: false
+          },
+          height: "260px",
+          width: "360px"
+        });
+      }
     });
   }
 
   openUserDialog(userRef: any) {
     this.userService.getUser(userRef).subscribe(result => {
-      const dialogRef = this.dialog.open(UserDetailDialog, {
-        data: {
-          user: result,
-          dialogFn: 0
-        },
-        height: "560px",
-        width: "600px"
-      });
+      if(result!=null) {
+        const dialogRef = this.dialog.open(UserDetailDialog, {
+          data: {
+            user: result,
+            dialogFn: 0
+          },
+          height: "560px",
+          width: "600px"
+        });
+      } else {
+        this.dialog.open(ConfirmationDialogComponent, {
+          data: {
+            title: "View User Message",
+            message: "User not found.",
+            enableCancel: false
+          },
+          height: "260px",
+          width: "360px"
+        });
+      }
     });
   }
 

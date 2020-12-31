@@ -147,15 +147,6 @@ export class AccSettingComponent implements OnInit {
             width: "360px"
           });
         });
-        this.dialog.open(ConfirmationDialogComponent, {
-          data: {
-            title: "Account Setting Message",
-            message: "A password reset email is sent to "+this.user.email+".",
-            enableCancel: false
-          },
-          height: "260px",
-          width: "360px"
-        });
       }
     });
   }

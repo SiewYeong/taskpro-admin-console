@@ -19,8 +19,13 @@
       <span *ngIf="authService.isLoggedIn" class="username">{{authService.user ? authService.user.name:'Admin'}}</span>
     </mat-toolbar>
 
-    <div class="loggedContainer">
+    <div>
       <router-outlet></router-outlet>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
+<div class="loading-overlay" *ngIf="loading">
+  <div class="loading-center">
+      <mat-spinner></mat-spinner>
+  </div>
+</div>

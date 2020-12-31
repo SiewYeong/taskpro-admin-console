@@ -6,6 +6,7 @@ import { ConfirmationDialogComponent } from '../components/confirmation-dialog/c
 import { MatDialog } from '@angular/material/dialog';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
+import { SpinnerService } from './spinner.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class AuthService {
 
   user: User;
 
-  constructor(private afAuth: AngularFireAuth, private afs: AngularFirestore, private router: Router, public dialog: MatDialog) {
+  constructor(private afAuth: AngularFireAuth, private afs: AngularFirestore, private router: Router, public dialog: MatDialog, private spinnerService: SpinnerService) {
     this.afAuth.authState.subscribe(user => {
       if(user) {
         this.afs.doc<User>('users/'+user.uid).valueChanges().subscribe(doc => {
@@ -28,6 +29,7 @@ export class AuthService {
   }
 
   login(email: string, password: string) {
+    this.spinnerService.show();
     const users = this.afs.collection<User>('users',ref => ref.where('email', '==', email).limit(1)).valueChanges();
     users.subscribe(u => {
       if(u.length!=0) {
@@ -35,14 +37,22 @@ export class AuthService {
           this.afAuth.signInWithEmailAndPassword(email, password).then(value => {
             console.log("Login successfully."+value);
             this.router.navigateByUrl('/dashboard');
+            this.spinnerService.hide();
           }).catch(err => {
-            this.openMessageDialog(err.message);
+            if(err.code == "auth/wrong-password") {
+              this.openMessageDialog("Password is invalid.");
+            } else {
+              this.openMessageDialog(err.message);
+            }
+            this.spinnerService.hide();
           });
         } else {
           this.openMessageDialog("User has been deactivated or deleted.");
+          this.spinnerService.hide();
         }
       } else {
         this.openMessageDialog("Email not found.")
+        this.spinnerService.hide();
       }
     });
   }

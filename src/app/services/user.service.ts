@@ -15,6 +15,13 @@ import * as firebase from 'firebase';
 })
 export class UserService {
 
+  private config = {
+    apiKey: "AIzaSyAu01CyYNXvrPfsDGEyH76rEzdGTJiKO7o",
+    authDomain: "taskpro-47370.firebaseapp.com",
+    databaseURL: "https://taskpro-47370.firebaseio.com"
+  };
+  private secondaryApp = firebase.initializeApp(this.config, "Secondary");
+
   constructor(private afs: AngularFirestore, private afAuth: AngularFireAuth) { }
 
   getAllUsers(): Observable<User[]> {
@@ -91,15 +98,9 @@ export class UserService {
 
   addAdmin(user: User, pwd: string) {
     return new Promise((resolve, reject) => {
-      var config = {
-        apiKey: "AIzaSyAu01CyYNXvrPfsDGEyH76rEzdGTJiKO7o",
-        authDomain: "taskpro-47370.firebaseapp.com",
-        databaseURL: "https://taskpro-47370.firebaseio.com"
-      }
-      var secondaryApp = firebase.initializeApp(config, "Secondary")
-      secondaryApp.auth().createUserWithEmailAndPassword(user.email, pwd).then(value => {
+      this.secondaryApp.auth().createUserWithEmailAndPassword(user.email, pwd).then(value => {
         console.log("User " + value.user.uid + " created successfully!");
-        secondaryApp.auth().signOut();
+        this.secondaryApp.auth().signOut();
         user.id = value.user.uid;
         user.joined = new Date();
         this.afs.collection('users').doc(user.id).set(Object.assign({}, user));

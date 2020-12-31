@@ -86,10 +86,11 @@ export class TaskDetailDialog implements OnInit {
   }
 
   cancelTask() {
+    var refund = this.task.status=="Ongoing";
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       data: {
         title: "Cancel Confirmation",
-        message: "Are you sure you want to cancel this task? This action cannot be undone.",
+        message: "Are you sure you want to cancel this task"+(refund?" and approve refund":"")+"? This action cannot be undone.",
         enableCancel: true
       },
       height: "260px",
@@ -101,11 +102,14 @@ export class TaskDetailDialog implements OnInit {
         this.taskService.updateTask(this.task,{
           status: this.task.status
         });
+        if(refund) {
+          this.taskService.refund(this.task);
+        }
         var notif = new Notification();
         notif.sentTo = this.task.created_by.id;
         notif.sentAt = new Date();
         notif.title = "Task is Cancelled";
-        notif.content = "Your task (ID: "+this.task.id+") has been cancelled by the admin.";
+        notif.content = "Your task (ID: "+this.task.id+") has been cancelled by the admin."+(refund?" Your money has been refunded to your wallet.":"");
         this.notifService.addNotif(notif, null, true);
       }
     });
@@ -117,14 +121,26 @@ export class TaskDetailDialog implements OnInit {
 
   openUserDialog(userRef: any) {
     this.userService.getUser(userRef).subscribe(result => {
-      const dialogRef = this.dialog.open(UserDetailDialog, {
-        data: {
-          user: result,
-          dialogFn: 0
-        },
-        height: "560px",
-        width: "600px"
-      });
+      if(result!=null) {
+        const dialogRef = this.dialog.open(UserDetailDialog, {
+          data: {
+            user: result,
+            dialogFn: 0
+          },
+          height: "560px",
+          width: "600px"
+        });
+      } else {
+        this.dialog.open(ConfirmationDialogComponent, {
+          data: {
+            title: "View User Message",
+            message: "User not found.",
+            enableCancel: false
+          },
+          height: "260px",
+          width: "360px"
+        });
+      }
     });
   }
 }

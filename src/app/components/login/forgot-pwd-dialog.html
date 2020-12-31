@@ -1,0 +1,20 @@
+<div class="dialog-container">
+    <mat-toolbar class="dialog-toolbar">
+        <span class="dialog-title">Forgot Password</span>
+        <button mat-icon-button class="closeBtn" tabindex=-1 (click)="closeDialog()">
+            <mat-icon style="background: none;">close</mat-icon>
+        </button>
+    </mat-toolbar>
+    <div>
+        <div mat-dialog-content>
+            <div class="msg">A password reset email will be sent to email below.</div> 
+            <div>
+                <form #formData="ngForm" (ngSubmit)="onSubmit(formData)" style="text-align: -webkit-center;">
+                    <label>Email</label>
+                    <input type="email" name="email" ngModel class="input-txt" required>
+                    <button mat-button type="submit" [disabled]="!formData.valid" class="dialogBtn">Send Password Reset Email</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

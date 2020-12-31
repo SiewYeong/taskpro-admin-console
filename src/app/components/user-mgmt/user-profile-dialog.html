@@ -1,5 +1,5 @@
 <div class="dialog-container">
-    <mat-toolbar>
+    <mat-toolbar class="dialog-toolbar">
         <span class="dialog-title">User Profile</span>
         <button mat-icon-button class="closeBtn" tabindex=-1 (click)="closeDialog()">
             <mat-icon style="background: none;">close</mat-icon>
@@ -36,57 +36,13 @@
             <tr><td colspan="6" style="text-align: left;">{{profile.achievement!="" ? profile.achievement:'-'}}</td></tr>
             <tr><td colspan="6" class="table-label">Services</td></tr>
             <tr><td colspan="6" style="text-align: left;">{{profile.services!="" ? profile.services:'-'}}</td></tr>
-            <tr><td colspan="6" class="table-label">Gallery</td></tr>
+            <!-- <tr><td colspan="6" class="table-label">Gallery</td></tr>
             <tr>
                 <td colspan="6">
                     <div *ngIf="profile.gallery.length!=0; else none_text"><img *ngFor="let imgPath of profile.gallery" src={{imgPath}} style="height: 70px; width: 70px;"/></div>
                     <ng-template #none_text>-</ng-template>
                 </td>
-            </tr>
+            </tr> -->
         </table>
-        <!-- <mat-grid-list cols="2" rowHeight="50:18" gutterSize="10px">
-            <mat-grid-tile>
-                <div class="text-inside-grid">
-                    <div class="label">Profile ID</div>
-                    <div class="field-value">{{ profile.id }}</div>
-                </div>
-            </mat-grid-tile>
-            <mat-grid-tile>
-                <div class="text-inside-grid">
-                    <div class="label">User Name</div>
-                    <div class="field-value">{{ profile.name }}</div>
-                </div>
-            </mat-grid-tile>
-            <mat-grid-tile colspan="2">
-                <div class="text-inside-grid">
-                    <div class="label">About</div>
-                    <div class="field-value">{{ profile.about }}</div>
-                </div>
-            </mat-grid-tile>
-            <mat-grid-tile colspan="2">
-                <div class="text-inside-grid">
-                    <div class="label">Services</div>
-                    <div class="field-value">{{ profile.services }}</div>
-                </div>
-            </mat-grid-tile>
-            <mat-grid-tile colspan="2">
-                <div class="text-inside-grid">
-                    <div class="label">Achievement</div>
-                    <div class="field-value">{{ profile.achievement }}</div>
-                </div>
-            </mat-grid-tile>
-            <mat-grid-tile>
-                <div class="text-inside-grid">
-                    <div class="label">No. of Task Completed</div>
-                    <div class="field-value">{{ profile.task_completed }}</div>
-                </div>
-            </mat-grid-tile>
-            <mat-grid-tile>
-                <div class="text-inside-grid">
-                    <div class="label">Rating</div>
-                    <div class="field-value">{{ profile.rating }}</div>
-                </div>
-            </mat-grid-tile>
-        </mat-grid-list> -->
     </div>
 </div>

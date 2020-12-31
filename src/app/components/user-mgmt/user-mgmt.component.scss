@@ -1,27 +1,5 @@
 @import url('../../app.component.scss');
 
-.top-card {
-    padding: 20px 60px 20px 60px;
-}
-
-.statusBtn {
-    width: 100px;
-    //color: white;
-    border-style: solid;
-    border-width: 1px;
-    .mat-icon {
-        font-size: 21px !important;
-    }
-}
-
-.mat-button {
-    .mat-menu-trigger {
-      position: absolute;
-      top: 0;
-      right: -1px;
-    }
-}
-
 ::ng-deep .mat-menu-content:not(:empty) {
     padding: 0px !important;
 }
@@ -29,10 +7,4 @@
 ::ng-deep .mat-menu-panel {
     min-width: 0px !important;
     min-height: 0px !important;
-}
-
-.mat-menu-item {
-    line-height: 36px;
-    height: 36px;
-    width: auto;
 }

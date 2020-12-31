@@ -1,5 +1,5 @@
 <div class="dialog-container">
-    <mat-toolbar>
+    <mat-toolbar class="dialog-toolbar">
         <span class="dialog-title" [ngSwitch]="fn">
             <span *ngSwitchCase="0">User Detail</span>
             <span *ngSwitchCase="1">Edit User Detail</span>
@@ -58,11 +58,11 @@
                     <div class="text-inside-grid" *ngIf="canbeUpdated; else disabled_statusbtn">
                         <div class="label">Status</div>
                         <div [ngSwitch]="user.status" class="field-value">
-                            <button *ngSwitchCase="0" mat-button class="statusBtn" type="button" style="border-color: green; color: green;" (click)="menuTrigger.openMenu()" tabindex=-1>
+                            <button *ngSwitchCase="0" mat-button class="statusBtn greenBtn" type="button" (click)="menuTrigger.openMenu()" tabindex=-1>
                                 Active<mat-icon>keyboard_arrow_right</mat-icon>
                                 <div #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu"></div>
                             </button>
-                            <button *ngSwitchCase="1" mat-button class="statusBtn" type="button" style="border-color: red; color: red;" (click)="menuTrigger.openMenu()" tabindex=-1>
+                            <button *ngSwitchCase="1" mat-button class="statusBtn redBtn" type="button" (click)="menuTrigger.openMenu()" tabindex=-1>
                                 Inactive<mat-icon>keyboard_arrow_right</mat-icon>
                                 <div #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu"></div>
                             </button>
@@ -75,10 +75,10 @@
                         <div class="text-inside-grid">
                             <div class="label">Status</div>
                             <div [ngSwitch]="user.status" class="field-value">
-                                <button *ngSwitchCase="0" mat-stroked-button disabled class="statusBtn" type="button" style="border-color: green; color: green;">
+                                <button *ngSwitchCase="0" mat-stroked-button disabled class="statusBtn greenBtn" type="button">
                                     Active
                                 </button>
-                                <button *ngSwitchCase="1" mat-stroked-button disabled class="statusBtn" type="button" style="border-color: red; color: red;">
+                                <button *ngSwitchCase="1" mat-stroked-button disabled class="statusBtn redBtn" type="button">
                                     Inactive
                                 </button>
                             </div>
@@ -188,11 +188,11 @@
                         <div *ngIf="fn==1" class="text-inside-grid">
                             <div class="label">Status</div>
                             <div [ngSwitch]="userForm.get('status').value" class="field-value">
-                                <button *ngSwitchCase="0" mat-button class="statusBtn" type="button" style="border-color: green; color: green;" (click)="menuTrigger.openMenu()">
+                                <button *ngSwitchCase="0" mat-button class="statusBtn greenBtn" type="button" (click)="menuTrigger.openMenu()">
                                     Active<mat-icon>keyboard_arrow_right</mat-icon>
                                     <div #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu"></div>
                                 </button>
-                                <button *ngSwitchCase="1" mat-button class="statusBtn" type="button" style="border-color: red; color: red;" (click)="menuTrigger.openMenu()">
+                                <button *ngSwitchCase="1" mat-button class="statusBtn redBtn" type="button" (click)="menuTrigger.openMenu()">
                                     Inactive<mat-icon>keyboard_arrow_right</mat-icon>
                                     <div #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu"></div>
                                 </button>
@@ -204,10 +204,10 @@
                         <div *ngIf="fn==2" class="text-inside-grid">
                             <div class="label">Status</div>
                             <div [ngSwitch]="userForm.get('status').value">
-                                <button *ngSwitchCase="0" mat-stroked-button disabled type="button" style="border-color: green; color: green;">
+                                <button *ngSwitchCase="0" mat-stroked-button disabled type="button" class="greenBtn">
                                     Active
                                 </button>
-                                <button *ngSwitchCase="1" mat-stroked-button disabled type="button" style="border-color: red; color: red;">
+                                <button *ngSwitchCase="1" mat-stroked-button disabled type="button" class="redBtn">
                                     Inactive
                                 </button>
                             </div>
@@ -220,4 +220,9 @@
             </div>
         </form>
     </ng-template>
+</div>
+<div class="loading-overlay" *ngIf="loading">
+    <div class="loading-center">
+        <mat-spinner></mat-spinner>
+    </div>
 </div>

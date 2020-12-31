@@ -39,6 +39,19 @@ body {
     z-index: 1000;
 }
 
+.dialog-toolbar {
+    background-color: sandybrown;
+    height: 50px;
+}
+
+.dialog-title {
+    text-align: center;
+    display: inline-table;
+    width: 100%;
+    color: white;
+    font-size: 20px;
+}
+
 .app-name {
     color: white;
     font-size: 30px;
@@ -65,30 +78,6 @@ button {
     overflow: hidden;
 }
 
-.backNavBar {
-    height: 60px;
-    background-color: sandybrown;
-}
-
-.backNavBarTitle {
-    position: absolute;
-    width: 100%;
-    text-align: center;
-    margin-top:5px;
-    color: white;
-    font-size: 32px;
-    height: 60px;
-}
-
-.backBtn {
-    height:59px;
-    width: 70px;
-    margin:0 60px;
-    background: none;
-    border:none;
-    float:left;
-}
-
 .moduleTitle {
     width: 100%;
     text-align: center;
@@ -107,6 +96,7 @@ button {
 .text-inside-grid {
     position: absolute;
     left: 5px;
+    word-break: break-word;
 }
 
 ::ng-deep .mat-dialog-container {
@@ -141,4 +131,73 @@ button {
     height: 20px;
     width: 20px;
     vertical-align: middle;
+}
+
+.loading-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.loading-overlay{
+  height:100vh;
+  width:100%;
+  background-color:rgba(0, 0, 0, 0.286);
+  z-index:    10;
+  top:        0; 
+  left:       0; 
+  position:   fixed;
+}
+
+::ng-deep .mat-progress-spinner circle, .mat-spinner circle {
+    stroke: sandybrown;
+}
+
+.editBtn {
+    position: absolute;
+    background: none;
+    color: white;
+    line-height: 0px;
+}
+
+.closeBtn {
+    position: relative;
+    background: none;
+    color: white;
+    line-height: 0px;
+}
+
+.statusBtn {
+    width: 100px;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.mat-button .mat-menu-trigger {
+    position: absolute;
+    top: 0;
+    right: -1px;
+}
+
+.yellowBtn {
+    color: sandybrown !important;
+    border-color: sandybrown;
+}
+
+.redBtn {
+    color: red !important;
+    border-color: red;
+}
+
+.greenBtn {
+    color: green !important;
+    border-color: green;
+}
+
+.mat-menu-item {
+    line-height: 36px;
+    height: 36px;
 }

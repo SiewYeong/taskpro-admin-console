@@ -1,70 +1,20 @@
 @import url('../../app.component.scss');
 
-.example-spacer {
-    flex: 1 1 auto;
-}
-
-.mat-toolbar {
-    background-color: sandybrown;
-    height: 50px;
-}
-
-.dialog-title {
-    text-align: center;
-    display: inline-table;
-    width: 100%;
-    color: white;
-    font-size: 20px;
-}
-
 .mat-dialog-content {
     margin: 20px 10px 0px 10px;
     height: 460px;
 }
 
-.editBtn {
-    position: absolute;
-    background: none;
-    color: white;
-    line-height: 0px;
-}
-
-.closeBtn {
-    position: relative;
-    background: none;
-    color: white;
-    line-height: 0px;
-}
-
 .statusBtn {
     width: 110px;
     padding: 0 12px;
-    //color: white;
-    border-style: solid;
-    border-width: 1px;
-    .mat-icon {
-        font-size: 21px !important;
-    }
-    .mat-menu-trigger {
-        position: absolute;
-        top: 0;
-        right: -1px;
-      }
 }
 
 .assignBtn {
-    width: 250px;
+    text-align: left;
     padding: 0 12px;
     border-style: solid;
     border-width: 1px;
-    .mat-icon {
-        font-size: 21px !important;
-    }
-    .mat-menu-trigger {
-        position: absolute;
-        top: 0;
-        right: -1px;
-      }
 }
 
 .dialogBtn {
@@ -74,21 +24,12 @@
     position: relative;
 }
 
-.mat-menu-item {
-    line-height: 36px;
-    height: 36px;
-}
-
 .label {
     font-size: 17px; 
     color:#363E3F;
     font-weight: bold;
     width: 130px;
     padding-right: 10px;
-}
-
-.text-inside-grid {
-    word-break: break-word;
 }
 
 .mat-button-focus-overlay {
@@ -103,20 +44,4 @@ td {
     text-align: left;
     vertical-align: top;
     padding-top: 10px;
-}
-
-
-.handling {
-    color: sandybrown;
-    border-color: sandybrown;
-}
-
-.pending {
-    color: red;
-    border-color: red;
-}
-
-.completed {
-    color: green;
-    border-color: green;
 }
