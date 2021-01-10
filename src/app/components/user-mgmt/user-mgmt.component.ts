@@ -136,7 +136,7 @@ export class UserDetailDialog implements OnInit{
       status: new FormControl(this.user.status)
     });
     if(this.fn==2) { // add
-      this.userForm.addControl('password', new FormControl(null, [Validators.required, Validators.pattern('((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,30})')]));
+      this.userForm.addControl('password', new FormControl(null, [Validators.required, Validators.pattern('((?=.*\\d)(?=.*[a-zA-Z]).{6,30})')]));
       this.userForm.addControl('confirm_password', new FormControl(null, [Validators.required]));
       this.userForm.addControl('role', new FormControl(this.user.role));
       //this.userForm.setValidators(this.checkPasswords);

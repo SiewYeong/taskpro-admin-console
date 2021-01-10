@@ -38,7 +38,7 @@
                 <tr>
                     <td class="label">Image Header</td>
                     <td>
-                        <img *ngIf="notif.imageHeader!=null; else no_img" src={{notif.imageHeader}} style="max-height: 380px; max-width: 380px;"/>
+                        <img *ngIf="notif.imageHeader!=null && notif.imageHeader!=''; else no_img" src={{notif.imageHeader}} style="max-height: 380px; max-width: 380px;"/>
                         <ng-template #no_img>-</ng-template>
                     </td>
                 </tr>

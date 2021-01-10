@@ -154,7 +154,7 @@
                             <mat-form-field appearance="outline">
                                 <input matInput type="password" formControlName="password" required/>
                                 <mat-error *ngIf="userForm.get('password').hasError('required')">Password is required.</mat-error>
-                                <mat-error *ngIf="userForm.get('password').hasError('pattern')">Minimum 8 characters, including digit, lower and upper case letters.</mat-error>
+                                <mat-error *ngIf="userForm.get('password').hasError('pattern')">Minimum 6 characters, including digit and letters.</mat-error>
                             </mat-form-field>
                         </div>
                     </mat-grid-tile>

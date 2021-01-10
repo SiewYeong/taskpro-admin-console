@@ -187,6 +187,7 @@ export class NotifDetailDialog implements OnInit{
         );
       });
     } else { //add
+      this.loading = true;
       this.notifService.addNotif(this.notif, this.imageFile, false).then(
         () => {
           this.loading = false;

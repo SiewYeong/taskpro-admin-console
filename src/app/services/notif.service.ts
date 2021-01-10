@@ -68,6 +68,7 @@ export class NotifService {
             }, err => reject());
         })).subscribe();
       } else {
+        notif.imageHeader = "";
         resolve();
       }
     });
