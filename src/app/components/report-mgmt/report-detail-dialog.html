@@ -14,7 +14,10 @@
                 </tr>
                 <tr>
                     <td class="label">Created By</td>
-                    <td><a class="clickable" (click)="openUserDialog(report.createdBy)">{{ report.author.name }}<mat-icon class="arrow">arrow_right</mat-icon></a></td>
+                    <td>
+                        <a *ngIf="report.author.name!=''; else deleted_acc" class="clickable" (click)="openUserDialog(report.createdBy)">{{ report.author.name }}<mat-icon class="arrow">arrow_right</mat-icon></a>
+                        <ng-template #deleted_acc>Deleted Account</ng-template>
+                    </td>
                 </tr>
                 <tr>
                     <td class="label">Created At</td>

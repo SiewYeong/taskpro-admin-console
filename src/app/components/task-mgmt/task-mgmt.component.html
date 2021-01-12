@@ -27,7 +27,7 @@
             <!-- Created by Column -->
             <ng-container matColumnDef="author">
               <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 300px;"> Created by </th>
-              <td mat-cell *matCellDef="let row"> {{row.author.name}} </td>
+              <td mat-cell *matCellDef="let row"> {{row.author.name!='' ? row.author.name : 'Deleted Account'}} </td>
             </ng-container>
   
             <!-- Status Column -->

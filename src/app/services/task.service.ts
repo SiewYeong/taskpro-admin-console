@@ -39,7 +39,7 @@ export class TaskService {
     debit.category = "Refund";
     debit.payout = false;
     debit.status = "Success"
-    debit.taskRef = "/task/"+task.id;
+    debit.taskRef = this.afs.collection("task").doc(task.id).ref;
     debit.createdAt = new Date();
     return this.afs.collection('wallet').doc(task.created_by.id).collection('debit').add(Object.assign({}, debit));
   }

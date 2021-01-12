@@ -13,7 +13,10 @@
                 </mat-grid-tile>
                 <mat-grid-tile colspan="5">
                     <mat-card-content>
-                        <span style="font-weight: bold; font-size: 17px;"><a class="clickable" (click)="openUserDialog(task.created_by)">{{task.author.name}}<mat-icon class="arrow">arrow_right</mat-icon></a></span><br>
+                        <span style="font-weight: bold; font-size: 17px;">
+                            <a *ngIf="task.author.name!=''; else deleted_acc" class="clickable" (click)="openUserDialog(task.created_by)">{{task.author.name}}<mat-icon class="arrow">arrow_right</mat-icon></a>
+                            <ng-template #deleted_acc>Deleted Account</ng-template>
+                        </span><br>
                         <span>{{task.created_at.toDate() | date:'dd MMM yyyy h:mma'}}</span>
                     </mat-card-content>
                 </mat-grid-tile>
