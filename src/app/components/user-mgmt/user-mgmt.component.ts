@@ -219,11 +219,7 @@ export class UserDetailDialog implements OnInit{
     dialogRef.afterClosed().subscribe(result => {
       if(result=="Confirm") {
         this.loading = true;
-        this.user.status = 2;
-        this.userService.updateUser(this.user,{
-          status: this.user.status,
-          deleted_at: new Date()
-        }).then(
+        this.userService.deleteUser(this.user.id).then(
           () => {
             this.loading = false;
             this.closeDialog("refreshTable");

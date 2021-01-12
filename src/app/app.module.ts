@@ -23,6 +23,7 @@ import { AngularFireAuthGuard, redirectUnauthorizedTo } from '@angular/fire/auth
 import { NotifMgmtComponent, NotifDetailDialog } from './components/notif-mgmt/notif-mgmt.component';
 import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { HttpClientModule } from '@angular/common/http';
 
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
 
@@ -69,7 +70,8 @@ const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
     NgxMatDatetimePickerModule,
     NgxMatTimepickerModule,
     NgxMatNativeDateModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    HttpClientModule
   ],
   entryComponents: [UserDetailDialog, UserProfileDialog, TaskDetailDialog, ReportDetailDialog, NotifDetailDialog, ConfirmationDialogComponent, ForgotPwdDialog],
   providers: [AngularFireAuthGuard],

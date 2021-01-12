@@ -1,28 +1,18 @@
-import { DatePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { User } from '../models/user';
 import { Profile } from '../models/profile';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { DateAdapter } from '@angular/material/core';
-import { environment } from 'src/environments/environment';
 import * as firebase from 'firebase';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  private config = {
-    apiKey: "AIzaSyAu01CyYNXvrPfsDGEyH76rEzdGTJiKO7o",
-    authDomain: "taskpro-47370.firebaseapp.com",
-    databaseURL: "https://taskpro-47370.firebaseio.com"
-  };
-  private secondaryApp = firebase.initializeApp(this.config, "Secondary");
-
-  constructor(private afs: AngularFirestore, private afAuth: AngularFireAuth) { }
+  constructor(private afs: AngularFirestore,  public http: HttpClient) { }
 
   getAllUsers(): Observable<User[]> {
     const users = this.afs.collection<User>('users',ref => 
@@ -97,10 +87,16 @@ export class UserService {
   }
 
   addAdmin(user: User, pwd: string) {
+    let config = {
+      apiKey: "AIzaSyAu01CyYNXvrPfsDGEyH76rEzdGTJiKO7o",
+      authDomain: "taskpro-47370.firebaseapp.com",
+      databaseURL: "https://taskpro-47370.firebaseio.com"
+    };
+    let secondaryApp = firebase.initializeApp(config, "Secondary");
     return new Promise((resolve, reject) => {
-      this.secondaryApp.auth().createUserWithEmailAndPassword(user.email, pwd).then(value => {
+      secondaryApp.auth().createUserWithEmailAndPassword(user.email, pwd).then(value => {
         console.log("User " + value.user.uid + " created successfully!");
-        this.secondaryApp.auth().signOut();
+        secondaryApp.auth().signOut();
         user.id = value.user.uid;
         user.joined = new Date();
         this.afs.collection('users').doc(user.id).set(Object.assign({}, user));
@@ -109,43 +105,15 @@ export class UserService {
         console.log("Something went wrong: ", error);
       });
     });
-    
-    // return new Promise((resolve, reject) => {
-    //   this.afAuth.createUserWithEmailAndPassword(user.email,user.password).then(value => {
-    //     console.log("Success", value);
-    //     user.id = value.user.uid;
-    //     user.joined = new Date();
-    //     return this.afs.collection('users').doc(user.id).set(Object.assign({}, user));
-    //   }).catch(error => {
-    //     console.log("Something went wrong: ", error);
-    //   });
-    // });
-    // this.afAuth.authState.subscribe(authUser => {
-    //   if(authUser) {
-    //     user.id = authUser.uid;
-    //     user.joined = new Date();
-    //     return this.afs.collection('users').doc(user.id).set(Object.assign({}, user));
-    //   } else {
-    //     return null;
-    //   }
-    // });
   }
 
-  deleteAdminFromAuth() {
-    return new Promise((resolve, reject) => {
-      var config = {
-        apiKey: "AIzaSyAu01CyYNXvrPfsDGEyH76rEzdGTJiKO7o",
-        authDomain: "taskpro-47370.firebaseapp.com",
-        databaseURL: "https://taskpro-47370.firebaseio.com"
-      }
-      var secondaryApp = firebase.initializeApp(config, "Secondary")
-      secondaryApp.auth().currentUser.delete().then(() => {
-        console.log("User deleted successfully!");
-        secondaryApp.auth().signOut();
-        resolve();
-      }).catch(error => {
-        console.log("Something went wrong: ", error);
-      });
+  deleteUser(uid: string) {
+    let url = "https://us-central1-taskpro-47370.cloudfunctions.net/deleteUserById";
+    let headers = new HttpHeaders({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+    return this.http.post(url, {"uid": uid}, {headers}).toPromise().then((res) => {
+      console.log(res);
+    }).catch((err) => {
+      console.log(err);
     });
   }
 }
