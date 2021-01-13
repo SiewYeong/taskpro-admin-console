@@ -15,7 +15,7 @@ export class TaskService {
 
   getAllTask(): Observable<Task[]> {
     const tasks = this.afs.collection<Task>('task', ref =>
-      ref.where('status','!=','Draft')
+      ref.where('status','!=','Draft').orderBy('status', 'desc')
     ).snapshotChanges().pipe(map(actions => {
         return actions.map(c => c.payload.doc.data());
       }));
