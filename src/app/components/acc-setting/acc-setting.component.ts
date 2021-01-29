@@ -25,6 +25,10 @@ export class AccSettingComponent implements OnInit {
   constructor(private userService: UserService, public dialog: MatDialog, private afAuth: AngularFireAuth) { }
 
   ngOnInit(): void {
+    this.setupPage();
+  }
+
+  setupPage() {
     this.user = JSON.parse(localStorage.getItem('user'));
     this.initializeEditValue();
   }
@@ -80,7 +84,7 @@ export class AccSettingComponent implements OnInit {
               name: this.user.name
             }).then(() => {
               console.log("Done update user name.");
-              this.ngOnInit();
+              this.setupPage();
             });
           }
         });
@@ -93,7 +97,7 @@ export class AccSettingComponent implements OnInit {
               idnum: this.user.idnum
             }).then(() => {
               console.log("Done update IC/passport no.");
-              this.ngOnInit();
+              this.setupPage();
             });
           }
         });
@@ -106,7 +110,7 @@ export class AccSettingComponent implements OnInit {
               ph_num: this.user.ph_num
             }).then(() => {
               console.log("Done update contact no.");
-              this.ngOnInit();
+              this.setupPage();
             });
           }
         });

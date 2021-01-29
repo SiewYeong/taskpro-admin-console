@@ -12,6 +12,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class UserService {
 
+  private config = {
+    apiKey: "AIzaSyAu01CyYNXvrPfsDGEyH76rEzdGTJiKO7o",
+    authDomain: "taskpro-47370.firebaseapp.com",
+    databaseURL: "https://taskpro-47370.firebaseio.com"
+  };
+  private secondaryApp = firebase.initializeApp(this.config, "Secondary");
+
   constructor(private afs: AngularFirestore,  public http: HttpClient) { }
 
   getAllUsers(): Observable<User[]> {
@@ -87,16 +94,10 @@ export class UserService {
   }
 
   addAdmin(user: User, pwd: string) {
-    let config = {
-      apiKey: "AIzaSyAu01CyYNXvrPfsDGEyH76rEzdGTJiKO7o",
-      authDomain: "taskpro-47370.firebaseapp.com",
-      databaseURL: "https://taskpro-47370.firebaseio.com"
-    };
-    let secondaryApp = firebase.initializeApp(config, "Secondary");
-    return new Promise((resolve, reject) => {
-      secondaryApp.auth().createUserWithEmailAndPassword(user.email, pwd).then(value => {
+    return new Promise<void>((resolve, reject) => {
+      this.secondaryApp.auth().createUserWithEmailAndPassword(user.email, pwd).then(value => {
         console.log("User " + value.user.uid + " created successfully!");
-        secondaryApp.auth().signOut();
+        this.secondaryApp.auth().signOut();
         user.id = value.user.uid;
         user.joined = new Date();
         this.afs.collection('users').doc(user.id).set(Object.assign({}, user));
